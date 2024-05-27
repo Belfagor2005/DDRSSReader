@@ -38,7 +38,21 @@ fi
 
 #change version NO. only manualy
 plugin=DD_RSS
-version=0.4
+# version=0.4
+version=https://github.com/Belfagor2005/DDRSSReader/raw/main/
+VER_FILE_NAME='version'	
+# Check Version
+# Download "version" file to /tmp/version
+echo 'Checking Server Version ...'
+VAV_VER_TMP="/tmp/"$VER_FILE_NAME
+rm -f $VAV_VER_TMP > /dev/null 2>&1
+wget --no-check-certificate -T 2 -O "/tmp/"$VER_FILE_NAME $version$VER_FILE_NAME
+
+
+
+
+
+
 url=https://github.com/Belfagor2005/DDRSSReader/raw/main/$plugin-$version.tar.gz
 package=/var/volatile/tmp/$plugin-$version.tar.gz
 #download & install

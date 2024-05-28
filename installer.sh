@@ -1,78 +1,64 @@
 #!/bin/sh
 
-if [ -d /usr/lib/enigma2/python/Plugins/Extensions/DD_RSS ]; then
-echo "> removing package please wait..."
-sleep 3s 
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/DD_RSS > /dev/null 2>&1
+#########################################################
+PACKAGE_DIR='DDRSSReader/main'
+MY_FILE="DD_RSS-0.4.tar.gz"
+version=0.4
+#########################################################
 
-status='/var/lib/opkg/status'
-package='enigma2-plugin-extensions-ddrssreader'
+MY_MAIN_URL="https://raw.githubusercontent.com/Belfagor2005/"
+MY_URL=$MY_MAIN_URL$PACKAGE_DIR'/'$MY_FILE
+MY_TMP_FILE="/tmp/"$MY_FILE
 
-if grep -q $package $status; then
-opkg remove $package > /dev/null 2>&1
-fi
-echo "************************"
-echo "*   Uninstall DD_RSS   *"
-echo "************************"
-sleep 3s
+rm -f $MY_TMP_FILE > /dev/null 2>&1
 
-#check install deps
-# Check python
-status='/var/lib/opkg/status'
-
-package='libc6'
-if grep -q $package $status; then
-rm -rf /run/opkg.lock
-opkg install $package > /dev/null 2>&1
-fi
-package='libgcc1'
-if grep -q $package $status; then
-rm -rf /run/opkg.lock
-opkg install $package > /dev/null 2>&1
-fi
-package='libstdc++6'
-rm -rf /run/opkg.lock
-if grep -q $package $status; then
-opkg install $package > /dev/null 2>&1
-fi
-
-#change version NO. only manualy
-plugin=DD_RSS
-# version=0.4
-version=https://github.com/Belfagor2005/DDRSSReader/raw/main/
-VER_FILE_NAME='version'	
-# Check Version
-# Download "version" file to /tmp/version
-echo 'Checking Server Version ...'
-VAV_VER_TMP="/tmp/"$VER_FILE_NAME
-rm -f $VAV_VER_TMP > /dev/null 2>&1
-wget --no-check-certificate -T 2 -O "/tmp/"$VER_FILE_NAME $version$VER_FILE_NAME
-
-
-
-
-
-
-url=https://github.com/Belfagor2005/DDRSSReader/raw/main/$plugin-$version.tar.gz
-package=/var/volatile/tmp/$plugin-$version.tar.gz
-#download & install
-echo "> Downloading $plugin-$version package  please wait ..."
-sleep 3s
-wget -O $package --no-check-certificate $url
-tar -xf $package -C /
-extract=$?
-rm -rf $package >/dev/null 2>&1
-
+MY_SEP='============================================================='
+echo $MY_SEP
+echo 'Downloading '$MY_FILE' ...'
+echo $MY_SEP
 echo ''
-if [ $extract -eq 0 ]; then
-echo "> $plugin-$version package installed successfully"
-echo "> adapted for py3 & added fhd screens By Lululla"
-sleep 3s
+wget -T 2 $MY_URL -P "/tmp/"
+
+if [ -f $MY_TMP_FILE ]; then
+
+	echo ''
+	echo $MY_SEP
+	echo 'Extracting ...'
+	echo $MY_SEP
+	echo ''
+	tar -xf $MY_TMP_FILE -C /
+	MY_RESULT=$?
+
+	rm -f $MY_TMP_FILE > /dev/null 2>&1
+
+	echo ''
+	echo ''
+	if [ $MY_RESULT -eq 0 ]; then
+		echo "#############################################################################"
+		echo "#             DD RSS FEEDS $version INSTALLED SUCCESSFULLY                       #"
+		echo "#             adapted for py3 & added fhd screens By Lululla                #"
+		echo "#   https://www.linuxsat-support.com/thread/158275-plugin-dd-rss-feeds      #"
+		echo "#############################################################################"
+		echo "#                       your Device will RESTART Now                        #"
+		echo "#############################################################################"		
+		if which systemctl > /dev/null 2>&1; then
+			sleep 2; systemctl restart enigma2
+		else
+			init 4; sleep 4; init 3;
+		fi
+	else
+		echo "   >>>>   INSTALLATION FAILED !   <<<<"
+	fi;
+	echo ''
+	echo '**************************************************'
+	echo '**                   FINISHED                   **'
+	echo '**************************************************'
+	echo ''
+	exit 0
 else
-echo "> $plugin-$version package installation failed"
-sleep 3s
-fi
+	echo ''
+	echo "Download failed !"
+	exit 1
 fi
 
-exit 0
-
+# ------------------------------------------------------------------------------------------------------------

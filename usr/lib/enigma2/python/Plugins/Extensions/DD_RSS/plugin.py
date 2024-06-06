@@ -22,7 +22,7 @@ from enigma import eTimer
 import os
 import ssl
 global mydatum
-global myslika
+# global myslika
 global mynaziv
 global mydesc
 global HALIGN
@@ -58,9 +58,9 @@ class UnesiPod(Screen):
 
     def __init__(self, session):
         if os.path.exists('/var/lib/dpkg/status'):
-            self.skin = '''<screen position="0,0" size="1920,1080" title="RSS FEED" flags="wfNoBorder">
+            self.skin = '''<screen position="center,center" size="1920,1080" title="RSS FEED" flags="wfNoBorder">
                             <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
-                            <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
+                            <ePixmap position="center,center" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
                             <widget name="liste" itemHeight="55" font="Regular; 36" position="920,120" size="930,770" zPosition="2" transparent="1" />
                             <widget name="opisi" font="Regular; 34" position="61,742" size="773,281" zPosition="2" transparent="1" />
                             <!--
@@ -68,18 +68,18 @@ class UnesiPod(Screen):
                                 <convert type="ConditionalShowHide" />
                             </widget>
                             -->
-                            <widget source="pred" render="Label" position="959,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
-                            <widget source="pgreen" render="Label" position="1172,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
-                            <widget source="pblue" render="Label" position="1584,1020" size="250,45" zPosition="4" font="Regular; 30" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget name="pred" position="959,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget name="pgreen" position="1172,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget name="pblue" position="1584,1020" size="250,45" zPosition="4" font="Regular; 30" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
                             <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
                                 <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
                             </widget>
                             <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
                         </screen>'''
         else:
-            self.skin = '''<screen position="0,0" size="1920,1080" title="RSS FEED" flags="wfNoBorder">
+            self.skin = '''<screen position="center,center" size="1920,1080" title="RSS FEED" flags="wfNoBorder">
                             <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
-                            <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
+                            <ePixmap position="center,center" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
                             <widget name="liste" itemHeight="55" font="Regular; 36" position="920,120" size="930,770" zPosition="2" transparent="1" />
                             <widget name="opisi" font="Regular; 34" position="61,742" size="773,281" zPosition="2" transparent="1" />
                             <!--
@@ -186,26 +186,26 @@ class MojRSS(Screen):
 
     def __init__(self, session):
         if os.path.exists('/var/lib/dpkg/status'):
-            self.skin = '''<screen position="0,0" size="1920,1080" title="RSS FEED" flags="wfNoBorder">
+            self.skin = '''<screen position="center,center" size="1920,1080" title="RSS FEED" flags="wfNoBorder">
                             <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
                             <ePixmap position="188,92" size="500,8" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slider_fhd.png" alphatest="blend" />
-                            <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
+                            <ePixmap position="center,center" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
                             <widget name="rsslist" itemHeight="55" position="920,120" size="930,770" scrollbarMode="showOnDemand" zPosition="2" transparent="1" />
                             <widget name="opisi" font="Regular; 34" position="61,742" size="773,281" zPosition="2" transparent="1" />
-                            <widget source="pred" render="Label" position="959,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
-                            <widget source="pgreen" render="Label" position="1172,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
-                            <widget source="pyellow" render="Label" position="1374,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
-                            <widget source="pblue" render="Label" position="1584,1020" size="250,45" zPosition="4" font="Regular; 30" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget name="pred" position="959,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget name="pgreen" position="1172,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget name="pyellow" position="1374,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget name="pblue" position="1584,1020" size="250,45" zPosition="4" font="Regular; 30" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
                             <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
                                 <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
                             </widget>
                             <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
                         </screen>'''
         else:
-            self.skin = '''<screen position="0,0" size="1920,1080" title="RSS FEED" flags="wfNoBorder">
+            self.skin = '''<screen position="center,center" size="1920,1080" title="RSS FEED" flags="wfNoBorder">
                             <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
                             <ePixmap position="188,92" size="500,8" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slider_fhd.png" alphatest="blend" />
-                            <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
+                            <ePixmap position="center,center" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
                             <widget name="rsslist" itemHeight="55" font="Regular; 36" position="920,120" size="930,770" scrollbarMode="showOnDemand" zPosition="2" transparent="1" />
                             <widget name="opisi" font="Regular; 34" position="61,742" size="773,281" zPosition="2" transparent="1" />
                             <widget source="pred" render="Label" position="959,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
@@ -432,30 +432,30 @@ class PregledRSS(Screen):
         global myindex
         global prviput
         if os.path.exists('/var/lib/dpkg/status'):
-            self.skin = '''<screen position="0,0" size="1920,1080" title="RSS FEED">
+            self.skin = '''<screen position="center,center" size="1920,1080" title="RSS FEED">
                             <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
                             <ePixmap position="188,92" size="500,8" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slider_fhd.png" alphatest="blend" />
-                            <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
+                            <ePixmap position="center,center" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
                             <widget name="rsspreg" itemHeight="55" position="920,120" size="930,770" scrollbarMode="showOnDemand" zPosition="2" transparent="1" />
                             <widget name="opisi" font="Regular; 34" position="61,742" size="773,281" zPosition="2" transparent="1" />
                             <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
                                 <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
                             </widget>
                             <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
-                            <widget name="slikica" pixmap="/tmp/slika.jpg" position="347,804" zPosition="2" size="200,140" transparent="1" alphatest="on" />
+                            <!-- <widget name="slikica" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slika.jpg" position="347,804" zPosition="2" size="200,140" transparent="1" alphatest="on" /> -->
                         </screen>'''
         else:
-            self.skin = '''<screen position="0,0" size="1920,1080" title="RSS FEED">
+            self.skin = '''<screen position="center,center" size="1920,1080" title="RSS FEED">
                             <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
                             <ePixmap position="188,92" size="500,8" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slider_fhd.png" alphatest="blend" />
-                            <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
+                            <ePixmap position="center,center" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
                             <widget name="rsspreg" itemHeight="55" font="Regular; 36" position="920,120" size="930,770" scrollbarMode="showOnDemand" zPosition="2" transparent="1" />
                             <widget name="opisi" font="Regular; 34" position="61,742" size="773,281" zPosition="2" transparent="1" />
                             <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
                                 <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
                             </widget>
                             <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
-                            <widget name="slikica" pixmap="/tmp/slika.jpg" position="347,804" zPosition="2" size="200,140" transparent="1" alphatest="on" />
+                            <!-- <widget name="slikica" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slika.jpg" position="347,804" zPosition="2" size="200,140" transparent="1" alphatest="on" /> -->
                         </screen>'''
 
         Screen.__init__(self, session)
@@ -474,7 +474,7 @@ class PregledRSS(Screen):
                                           'pageDown': self.pageDown,
                                           'ok': self.OK,
                                           'cancel': self.izlaz}, -2)
-        self['slikica'] = Pixmap()
+        # self['slikica'] = Pixmap()
         self['info'] = Label(_('Select'))
         prviput = 0
         myindex = 0
@@ -509,8 +509,8 @@ class PregledRSS(Screen):
                         # naslov = naslov.center(90)
                     else:
                         self.itemnas.append(razbi[0])
-                        self.datum.append(clearTags(razbi[1]))
-                        self.desc.append(clearTags(razbi[2]))
+                        self.datum.append(decodeHtml(razbi[1]))
+                        self.desc.append(decodeHtml(razbi[2]))
                         self.slika.append(razbi[3])
                         self.rsslist.append(razbi[0])
 
@@ -544,25 +544,28 @@ class PregledRSS(Screen):
 
     def showMenu(self):
         global prviput
-        if prviput == 0:
-            prviput = 1
-            self.stvorilistu()
-        else:
-            self.setTitle(naslov)
-            self['opisi'].setText(self.datum[myindex] + '\n\n' + self.desc[myindex])
+        try:
+            if prviput == 0:
+                prviput = 1
+                self.stvorilistu()
+            else:
+                self.setTitle(naslov)
+                self['opisi'].setText(self.datum[myindex] + '\n\n' + self.desc[myindex])
+        except Exception as e:
+            print('showmenuu aa', e)
 
     def izlaz(self):
         self.close()
 
     def OK(self):
         global mydatum
-        global myslika
+        # global myslika
         global mynaziv
         global mydesc
         mynaziv = self.itemnas[myindex]
         mydatum = self.datum[myindex]
         mydesc = self.desc[myindex]
-        myslika = self.slika[myindex]
+        # myslika = self.slika[myindex]
         self.session.open(CijeliTekst)
 
 
@@ -570,31 +573,31 @@ class CijeliTekst(Screen):
     print('class CijeliTekst(Screen):')
 
     def __init__(self, session):
-        if myslika != 'none':
-            self.skin = '''<screen position="0,0" size="1920,1080" title="RSS FEED">
-                            <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
-                            <ePixmap position="188,92" size="500,8" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slider_fhd.png" alphatest="blend" />
-                            <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
-                            <widget name="opisi" font="Regular; 36" position="920,120" size="930,770" zPosition="2" transparent="1" />
-                            <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
-                                <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
-                            </widget>
-                            <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
-                            <eLabel name="" position="346,652" size="190,52" backgroundColor="#003e4b53" halign="center" valign="center" transparent="0" font="Regular; 17" zPosition="3" text="0 FOR LANGUAGE" />
-                            <widget name="slikica" pixmap="/tmp/slika.jpg" position="347,804" zPosition="2" size="200,140" transparent="1" alphatest="on" />
-                        </screen>'''
-        else:
-            self.skin = '''<screen position="0,0" size="1920,1080" title="RSS FEED">
-                            <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
-                            <ePixmap position="188,92" size="500,8" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slider_fhd.png" alphatest="blend" />
-                            <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
-                            <widget name="opisi" font="Regular; 36" position="920,120" size="930,770" zPosition="2" transparent="1" />
-                            <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
-                                <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
-                            </widget>
-                            <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
-                            <widget name="slikica" pixmap="/tmp/slika.jpg" position="347,804" zPosition="2" size="200,140" transparent="1" alphatest="on" />
-                        </screen>'''
+        # if myslika != 'none':
+        self.skin = '''<screen position="center,center" size="1920,1080" title="RSS FEED">
+                        <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
+                        <ePixmap position="188,92" size="500,8" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slider_fhd.png" alphatest="blend" />
+                        <ePixmap position="center,center" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
+                        <widget name="opisi" font="Regular; 36" position="920,120" size="930,770" zPosition="2" transparent="1" />
+                        <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
+                            <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
+                        </widget>
+                        <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
+                        <eLabel name="" position="346,652" size="190,52" backgroundColor="#003e4b53" halign="center" valign="center" transparent="0" font="Regular; 17" zPosition="3" text="0 FOR LANGUAGE" />
+                        <!-- <widget name="slikica" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slika.jpg" position="347,804" zPosition="2" size="200,140" transparent="1" alphatest="on" /> -->
+                    </screen>'''
+        # else:
+        self.skin = '''<screen position="center,center" size="1920,1080" title="RSS FEED">
+                        <widget name="info" position="968,38" zPosition="4" size="870,40" font="Regular;35" backgroundColor="#050c101b" foregroundColor="white" transparent="1" valign="center" />
+                        <ePixmap position="188,92" size="500,8" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slider_fhd.png" alphatest="blend" />
+                        <ePixmap position="center,center" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/RSS_FEED+1.png" transparent="1" alphatest="blend" />
+                        <widget name="opisi" font="Regular; 36" position="920,120" size="930,770" zPosition="2" transparent="1" />
+                        <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
+                            <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
+                        </widget>
+                        <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
+                        <!-- <widget name="slikica" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DD_RSS/images/slika.jpg" position="347,804" zPosition="2" size="200,140" transparent="1" alphatest="on" /> -->
+                    </screen>'''
 
         Screen.__init__(self, session)
         self['opisi'] = ScrollLabel('Fake start')
@@ -604,12 +607,13 @@ class CijeliTekst(Screen):
                                                          'down': self.pageDown,
                                                          'cancel': self.close,
                                                          'ok': self.Gotovo}, -1)
-        if myslika != 'none':
-            os.system("wget -O /tmp/slika.jpg '" + str(myslika) + "'")
-            self['slikica'] = Pixmap()
+        # if myslika != 'none':
+            # os.system("wget -O /tmp/slika.jpg '" + str(myslika) + "'")
+            # if os.patch.exists('/tmp/slika.jpg'):
+                # self['slikica'] = Pixmap()
         txtxt = mydesc
         self['opisi'] = ScrollLabel()
-        self['opisi'].setText(clearTags(txtxt))
+        self['opisi'].setText(decodeHtml(txtxt))
         self.onLayoutFinish.append(self.showMenu)
 
     def pageUp(self):
@@ -625,7 +629,7 @@ class CijeliTekst(Screen):
         self.close()
 
 
-def clearTags(text):
+def decodeHtml(text):
     charlist = []
     charlist.append(('&#224;', '\xc3\xa0'))
     charlist.append(('&agrave;', '\xc3\xa0'))

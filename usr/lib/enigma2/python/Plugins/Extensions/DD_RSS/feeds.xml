@@ -9,6 +9,11 @@
 		<url>https://www.ansa.it/sito/ansait_rss.xml</url>
 	  </feed>
 	<feed>
+	<feed>
+	  <name>Tivustream.com</name>
+		<url>https://www.tivustream.com/feed</url>
+	  </feed>
+	<feed>
 	  <name>CBC .ca</name>
 		<url>https://www.cbc.ca/webfeed/rss/rss-world</url>
 	</feed>

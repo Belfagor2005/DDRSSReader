@@ -1,0 +1,201 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: stvcl\n"
+"Report-Msgid-Bugs-To: Lululla <ekekaz@gmail.com>\n"
+"POT-Creation-Date: 2024-07-16 13:07+0200\n"
+"PO-Revision-Date: 2024-07-16 13:07+0200\n"
+"Last-Translator: Lululla <ekekaz@gmail.com>\n"
+"Language-Team: lululla\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.4\n"
+"X-Poedit-Basepath: ../../../..\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: DD_RSS/Console.py:63
+msgid "Cancel"
+msgstr ""
+
+#: DD_RSS/Console.py:64
+msgid "Hide"
+msgstr ""
+
+#: DD_RSS/Console.py:77
+msgid "Console"
+msgstr ""
+
+#: DD_RSS/Console.py:96
+msgid "Execution progress"
+msgstr ""
+
+#: DD_RSS/Console.py:119
+msgid "Execution finished!!"
+msgstr ""
+
+#: DD_RSS/Console.py:125
+msgid ""
+"\n"
+"Press OK or Exit to abort!"
+msgstr ""
+
+#: DD_RSS/Console.py:126
+msgid "Exit"
+msgstr ""
+
+#: DD_RSS/Console.py:141
+msgid "Cancel execution?"
+msgstr ""
+
+#: DD_RSS/plugin.py:121
+msgid "Keyboard"
+msgstr ""
+
+#: DD_RSS/plugin.py:122
+msgid "Update"
+msgstr ""
+
+#: DD_RSS/plugin.py:123
+msgid "Save"
+msgstr ""
+
+#: DD_RSS/plugin.py:124
+msgid "Close"
+msgstr ""
+
+#: DD_RSS/plugin.py:125 DD_RSS/plugin.py:351 DD_RSS/plugin.py:589
+#: DD_RSS/plugin.py:715
+msgid "Select"
+msgstr ""
+
+#: DD_RSS/plugin.py:126
+#, python-format
+msgid "Setup RSS FEED v.%s"
+msgstr ""
+
+#: DD_RSS/plugin.py:216
+#, python-format
+msgid ""
+"New version %s is available\n"
+"\n"
+"Changelog: %s\n"
+"\n"
+"Press info_long or yellow_long button to start force updating."
+msgstr ""
+
+#: DD_RSS/plugin.py:221
+#, python-format
+msgid ""
+"New version %s is available.\n"
+"\n"
+"Changelog: %s \n"
+"\n"
+"Do you want to install it now?"
+msgstr ""
+
+#: DD_RSS/plugin.py:223
+msgid "Congrats! You already have the latest version..."
+msgstr ""
+
+#: DD_RSS/plugin.py:233
+#, python-format
+msgid "Do you want to install update ( %s ) now?"
+msgstr ""
+
+#: DD_RSS/plugin.py:242
+msgid "Update Aborted!"
+msgstr ""
+
+#: DD_RSS/plugin.py:347
+msgid "Delete"
+msgstr ""
+
+#: DD_RSS/plugin.py:348
+msgid "Add"
+msgstr ""
+
+#: DD_RSS/plugin.py:349
+msgid "Edit"
+msgstr ""
+
+#: DD_RSS/plugin.py:350
+msgid "Import"
+msgstr ""
+
+#, python-format
+#~ msgid "..:: TiVuStream List V. %s  by Lululla ::.."
+#~ msgstr "..:: TiVuStream List V. %s  by Lululla ::.."
+
+#~ msgid "Player"
+#~ msgstr "Player"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#, python-format
+#~ msgid "Converting %s"
+#~ msgstr "Converting %s"
+
+#~ msgid "TiVuStream M3U:"
+#~ msgstr "TiVuStream M3U:"
+
+#, python-format
+#~ msgid "Service Reference used %s"
+#~ msgstr "Service Reference used %s"
+
+#~ msgid "Play"
+#~ msgstr "Play"
+
+#~ msgid "N."
+#~ msgstr "N."
+
+#~ msgid "TiVuStream Config"
+#~ msgstr "TiVuStream Config"
+
+#~ msgid "Server:"
+#~ msgstr "Server:"
+
+#, python-format
+#~ msgid "Update Plugin to Version %s ?"
+#~ msgstr "Update Plugin to Version %s ?"
+
+#~ msgid "Question"
+#~ msgstr "Question"
+
+#~ msgid "Information"
+#~ msgstr "Information"
+
+#~ msgid "Warning"
+#~ msgstr "Warning"
+
+#~ msgid "Error"
+#~ msgstr "Error"
+
+#~ msgid "Message"
+#~ msgstr "Message"
+
+#~ msgid "No"
+#~ msgstr "No"
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "\n"
+#~ "Check Connection wait please..."
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ "\n"
+#~ "Check Connection wait please..."
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "Server Off !"
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ "Server Off !"

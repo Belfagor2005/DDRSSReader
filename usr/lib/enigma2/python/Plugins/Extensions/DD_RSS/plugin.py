@@ -4,16 +4,23 @@
 # This Software is Free, use it where you want
 # when you want for whatever you want and modify it if you want but don't remove my copyright!
 # adapted for py3 and added fhd screens @lululla 20240524
-from Components.ActionMap import ActionMap, NumberActionMap
+from . import _, Utils
+from .Console import Console as xConsole
+from Components.ActionMap import (ActionMap, NumberActionMap)
 from Components.ConfigList import ConfigList
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Pixmap import Pixmap
 from Components.ScrollLabel import ScrollLabel
-from Components.config import ConfigText
-from Components.config import KEY_0, KEY_DELETE, KEY_BACKSPACE
-from Components.config import KEY_LEFT, KEY_RIGHT
-from Components.config import getConfigListEntry
+from Components.config import (
+    ConfigText,
+    KEY_0,
+    KEY_DELETE,
+    KEY_BACKSPACE,
+    KEY_LEFT,
+    KEY_RIGHT,
+    getConfigListEntry,
+)
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -21,20 +28,31 @@ from Screens.VirtualKeyBoard import VirtualKeyBoard
 from enigma import eTimer
 import os
 import ssl
+import json
+import sys
+from datetime import datetime
+
 global mydatum
-# global myslika
 global mynaziv
 global mydesc
 global HALIGN
 
-version = '0.4'
-descplugx = 'RSS Simmple by DDamir v.%s\n\nadapted for py3 by @lululla 20240524\n\n' % version
+PY3 = False
+PY3 = sys.version_info.major >= 3
+
+if PY3:
+    PY3 = True
+    unidecode = str
+
+currversion = '0.6'
+descplugx = 'RSS Simmple by DDamir v.%s\n\nadapted for py3 by @lululla 20240524\n\n' % currversion
 inff = 'Import New from /tmp/feeds.xml'
 descplug = descplugx + inff
 nazrss = ConfigText(fixed_size=False, visible_width=40)
 urlrss = ConfigText(fixed_size=False, visible_width=40)
 ssl._create_default_https_context = ssl._create_unverified_context
-
+installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS9ERFJTU1JlYWRlci9tYWluL2luc3RhbGxlci5zaA=='
+developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUvRERSU1NSZWFkZXI='
 
 def trazenje(t1, t2, t3, tekst):
     n0 = tekst.find(t1)
@@ -71,6 +89,7 @@ class UnesiPod(Screen):
                             <widget name="pred" position="959,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
                             <widget name="pgreen" position="1172,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
                             <widget name="pblue" position="1584,1020" size="250,45" zPosition="4" font="Regular; 30" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget name="pyel" position="1369,1020" size="250,45" zPosition="4" font="Regular; 30" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
                             <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
                                 <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
                             </widget>
@@ -90,17 +109,30 @@ class UnesiPod(Screen):
                             <widget source="pred" render="Label" position="959,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
                             <widget source="pgreen" render="Label" position="1172,1019" size="250,45" zPosition="4" font="Regular; 28" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
                             <widget source="pblue" render="Label" position="1584,1020" size="250,45" zPosition="4" font="Regular; 30" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
-                             <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
+                            <widget source="pyel" render="Label" position="1369,1020" size="250,45" zPosition="4" font="Regular; 30" valign="center" halign="center" backgroundColor="#050c101b" transparent="1" foregroundColor="white" />
+                            <widget font="Regular; 40" halign="center" position="69,30" render="Label" size="749,70" source="global.CurrentTime" transparent="1">
                                 <convert type="ClockToText">Format:%a %d.%m. %Y | %H:%M</convert>
                             </widget>
                             <widget source="session.VideoPicture" render="Pig" position="77,152" zPosition="20" size="739,421" backgroundColor="transparent" transparent="0" />
                         </screen>'''
 
         Screen.__init__(self, session)
+        # self['VKeyIcon'] = Pixmap()
+        self['pblue'] = Label(_('Keyboard'))
+        self['pyel'] = Label(_('Update'))
+        self['pgreen'] = Label(_('Save'))
+        self['pred'] = Label(_('Close'))
+        self['info'] = Label(_('Select'))
+        self['opisi'] = Label(_('Setup RSS FEED v.%s' % currversion))        
+        self.Update = False
         self['actions'] = NumberActionMap(['SetupActions',
                                            'TextEntryActions',
                                            'WizardActions',
                                            'HelpActions',
+                                           'DirectionActions',
+                                           'HotkeyActions',
+                                           'InfobarEPGActions',
+                                           'ChannelSelectBaseActions',
                                            'MediaPlayerActions',
                                            'VirtualKeyboardActions',
                                            'ColorActions'], {'cancel': self.close,
@@ -112,6 +144,11 @@ class UnesiPod(Screen):
                                                              'blue': self.openKeyboard,
                                                              'green': self.savem,
                                                              'showVirtualKeyboard': self.openKeyboard,
+                                                             'yellow': self.update_me,  # update_me,
+                                                             'yellow_long': self.update_dev,
+                                                             'info_long': self.update_dev,
+                                                             'infolong': self.update_dev,
+                                                             'showEventInfoPlugin': self.update_dev,
                                                              '0': self.keyNumber,
                                                              '1': self.keyNumber,
                                                              '2': self.keyNumber,
@@ -126,13 +163,72 @@ class UnesiPod(Screen):
         self['liste'] = ConfigList(list)
         list.append(getConfigListEntry('RSS name: ', nazrss))
         list.append(getConfigListEntry('URL=>http://: ', urlrss))
-        # self['VKeyIcon'] = Pixmap()
-        self['pblue'] = Label(_('Keyboard'))
-        self['pgreen'] = Label(_('Save'))
-        self['pred'] = Label(_('Close'))
-        self['info'] = Label(_('Select'))
-        self['opisi'] = Label(_('Setup RSS FEED v.%s' % version))
+
+        self.timer = eTimer()
+        if os.path.exists('/var/lib/dpkg/status'):
+            self.timer_conn = self.timer.timeout.connect(self.check_vers)
+        else:
+            self.timer.callback.append(self.check_vers)
+        self.timer.start(500, 1)
         self.onLayoutFinish.append(self.layoutFinished)
+
+    def check_vers(self):
+        remote_version = '0.0'
+        remote_changelog = ''
+        req = Utils.Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
+        page = Utils.urlopen(req).read()
+        if PY3:
+            data = page.decode("utf-8")
+        else:
+            data = page.encode("utf-8")
+        if data:
+            lines = data.split("\n")
+            for line in lines:
+                if line.startswith("version"):
+                    remote_version = line.split("=")
+                    remote_version = line.split("'")[1]
+                if line.startswith("changelog"):
+                    remote_changelog = line.split("=")
+                    remote_changelog = line.split("'")[1]
+                    break
+        self.new_version = remote_version
+        self.new_changelog = remote_changelog
+        if float(currversion) < float(remote_version):
+        # if currversion < remote_version:
+            self.Update = True
+            # self['key_yellow'].show()
+            # self['key_green'].show()
+            self.session.open(MessageBox, _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog), MessageBox.TYPE_INFO, timeout=5)
+        # self.update_me()
+
+    def update_me(self):
+        if self.Update is True:
+            self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (self.new_version, self.new_changelog), MessageBox.TYPE_YESNO)
+        else:
+            self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
+
+    def update_dev(self):
+        try:
+            req = Utils.Request(Utils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
+            page = Utils.urlopen(req).read()
+            data = json.loads(page)
+            remote_date = data['pushed_at']
+            strp_remote_date = datetime.strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
+            remote_date = strp_remote_date.strftime('%Y-%m-%d')
+            self.session.openWithCallback(self.install_update, MessageBox, _("Do you want to install update ( %s ) now?") % (remote_date), MessageBox.TYPE_YESNO)
+        except Exception as e:
+            print('error xcons:', e)
+
+    def install_update(self, answer=False):
+        if answer:
+            cmd1 = 'wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'
+            self.session.open(xConsole, 'Upgrading...', cmdlist=[cmd1], finishedCallback=self.myCallback, closeOnSuccess=False)
+        else:
+            self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+
+    def myCallback(self, result=None):
+        print('result:', result)
+        return
 
     def layoutFinished(self):
         self.setTitle('RSS FEED')
@@ -744,4 +840,4 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-    return [PluginDescriptor(name='RSS by DD', description='RSS Simmple by DDamir ver.%s' % version, icon='rss.png', where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main), PluginDescriptor(name='RSS by DD', description='RSS Simple by DDamir ver.%s' % version, icon='rss.png', where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=main)]
+    return [PluginDescriptor(name='RSS by DD', description='RSS Simmple by DDamir ver.%s' % currversion, icon='rss.png', where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main), PluginDescriptor(name='RSS by DD', description='RSS Simple by DDamir ver.%s' % currversion, icon='rss.png', where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=main)]

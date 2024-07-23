@@ -6,6 +6,7 @@
 # adapted for py3 and added fhd screens @lululla 20240524
 from . import _, Utils
 from .Console import Console as xConsole
+
 from Components.ActionMap import (ActionMap, NumberActionMap)
 from Components.ConfigList import ConfigList
 from Components.Label import Label

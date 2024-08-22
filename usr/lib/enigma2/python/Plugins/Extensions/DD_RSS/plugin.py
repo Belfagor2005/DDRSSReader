@@ -131,35 +131,34 @@ class UnesiPod(Screen):
                                            'WizardActions',
                                            'HelpActions',
                                            'DirectionActions',
-                                           'HotkeyActions',
                                            'InfobarEPGActions',
                                            'ChannelSelectBaseActions',
                                            'MediaPlayerActions',
                                            'VirtualKeyboardActions',
-                                           'ColorActions'], {'cancel': self.close,
-                                                             'ok': self.Gotovo,
-                                                             'left': self.keyLeft,
-                                                             'right': self.keyRight,
-                                                             'deleteForward': self.keyDelete,
-                                                             'deleteBackward': self.keyBackspace,
-                                                             'blue': self.openKeyboard,
-                                                             'green': self.savem,
-                                                             'showVirtualKeyboard': self.openKeyboard,
-                                                             'yellow': self.update_me,  # update_me,
-                                                             'yellow_long': self.update_dev,
-                                                             'info_long': self.update_dev,
-                                                             'infolong': self.update_dev,
-                                                             'showEventInfoPlugin': self.update_dev,
-                                                             '0': self.keyNumber,
-                                                             '1': self.keyNumber,
-                                                             '2': self.keyNumber,
-                                                             '3': self.keyNumber,
-                                                             '4': self.keyNumber,
-                                                             '5': self.keyNumber,
-                                                             '6': self.keyNumber,
-                                                             '7': self.keyNumber,
-                                                             '8': self.keyNumber,
-                                                             '9': self.keyNumber}, -1)
+                                           'HotkeyActions'], {'cancel': self.close,
+                                                              'ok': self.Gotovo,
+                                                              'left': self.keyLeft,
+                                                              'right': self.keyRight,
+                                                              'deleteForward': self.keyDelete,
+                                                              'deleteBackward': self.keyBackspace,
+                                                              'blue': self.openKeyboard,
+                                                              'green': self.savem,
+                                                              'showVirtualKeyboard': self.openKeyboard,
+                                                              'yellow': self.update_me,  # update_me,
+                                                              'yellow_long': self.update_dev,
+                                                              'info_long': self.update_dev,
+                                                              'infolong': self.update_dev,
+                                                              'showEventInfoPlugin': self.update_dev,
+                                                              '0': self.keyNumber,
+                                                              '1': self.keyNumber,
+                                                              '2': self.keyNumber,
+                                                              '3': self.keyNumber,
+                                                              '4': self.keyNumber,
+                                                              '5': self.keyNumber,
+                                                              '6': self.keyNumber,
+                                                              '7': self.keyNumber,
+                                                              '8': self.keyNumber,
+                                                              '9': self.keyNumber}, -1)
         list = []
         self['liste'] = ConfigList(list)
         list.append(getConfigListEntry('RSS name: ', nazrss))
@@ -725,115 +724,87 @@ class CijeliTekst(Screen):
     def Gotovo(self):
         self.close()
 
-
 def decodeHtml(text):
-    charlist = []
-    charlist.append(('&#224;', '\xc3\xa0'))
-    charlist.append(('&agrave;', '\xc3\xa0'))
-    charlist.append(('&#225;', '\xc3\xa1'))
-    charlist.append(('&aacute;', '\xc3\xa1'))
-    charlist.append(('&#226;', '\xc3\xa2'))
-    charlist.append(('&acirc;', '\xc3\xa2'))
-    charlist.append(('&#228;', '\xc3\xa4'))
-    charlist.append(('&auml;', '\xc3\xa4'))
-    charlist.append(('&#249;', '\xc3\xb9'))
-    charlist.append(('&ugrave;', '\xc3\xb9'))
-    charlist.append(('&#250;', '\xc3\xba'))
-    charlist.append(('&uacute;', '\xc3\xba'))
-    charlist.append(('&#251;', '\xc3\xbb'))
-    charlist.append(('&ucirc;', '\xc3\xbb'))
-    charlist.append(('&#252;', '\xc3\xbc'))
-    charlist.append(('&uuml;', '\xc3\xbc'))
-    charlist.append(('&#242;', '\xc3\xb2'))
-    charlist.append(('&ograve;', '\xc3\xb2'))
-    charlist.append(('&#243;', '\xc3\xb3'))
-    charlist.append(('&oacute;', '\xc3\xb3'))
-    charlist.append(('&#244;', '\xc3\xb4'))
-    charlist.append(('&ocirc;', '\xc3\xb4'))
-    charlist.append(('&#246;', '\xc3\xb6'))
-    charlist.append(('&ouml;', '\xc3\xb6'))
-    charlist.append(('&#236;', '\xc3\xac'))
-    charlist.append(('&igrave;', '\xc3\xac'))
-    charlist.append(('&#237;', '\xc3\xad'))
-    charlist.append(('&iacute;', '\xc3\xad'))
-    charlist.append(('&#238;', '\xc3\xae'))
-    charlist.append(('&icirc;', '\xc3\xae'))
-    charlist.append(('&#239;', '\xc3\xaf'))
-    charlist.append(('&iuml;', '\xc3\xaf'))
-    charlist.append(('&#232;', '\xc3\xa8'))
-    charlist.append(('&egrave;', '\xc3\xa8'))
-    charlist.append(('&#233;', '\xc3\xa9'))
-    charlist.append(('&eacute;', '\xc3\xa9'))
-    charlist.append(('&#234;', '\xc3\xaa'))
-    charlist.append(('&ecirc;', '\xc3\xaa'))
-    charlist.append(('&#235;', '\xc3\xab'))
-    charlist.append(('&euml;', '\xc3\xab'))
-    charlist.append(('&#192;', '\xc3\x80'))
-    charlist.append(('&Agrave;', '\xc3\x80'))
-    charlist.append(('&#193;', '\xc3\x81'))
-    charlist.append(('&Aacute;', '\xc3\x81'))
-    charlist.append(('&#194;', '\xc3\x82'))
-    charlist.append(('&Acirc;', '\xc3\x82'))
-    charlist.append(('&#196;', '\xc3\x84'))
-    charlist.append(('&Auml;', '\xc3\x84'))
-    charlist.append(('&#217;', '\xc3\x99'))
-    charlist.append(('&Ugrave;', '\xc3\x99'))
-    charlist.append(('&#218;', '\xc3\x9a'))
-    charlist.append(('&Uacute;', '\xc3\x9a'))
-    charlist.append(('&#219;', '\xc3\x9b'))
-    charlist.append(('&Ucirc;', '\xc3\x9b'))
-    charlist.append(('&#220;', '\xc3\x9c'))
-    charlist.append(('&Uuml;', '\xc3\x9c'))
-    charlist.append(('&#210;', '\xc3\x92'))
-    charlist.append(('&Ograve;', '\xc3\x92'))
-    charlist.append(('&#211;', '\xc3\x93'))
-    charlist.append(('&Oacute;', '\xc3\x93'))
-    charlist.append(('&#212;', '\xc3\x94'))
-    charlist.append(('&Ocirc;', '\xc3\x94'))
-    charlist.append(('&#214;', '\xc3\x96'))
-    charlist.append(('&Ouml;', '\xc3\x96'))
-    charlist.append(('&#204;', '\xc3\x8c'))
-    charlist.append(('&Igrave;', '\xc3\x8c'))
-    charlist.append(('&#205;', '\xc3\x8d'))
-    charlist.append(('&Iacute;', '\xc3\x8d'))
-    charlist.append(('&#206;', '\xc3\x8e'))
-    charlist.append(('&Icirc;', '\xc3\x8e'))
-    charlist.append(('&#207;', '\xc3\x8f'))
-    charlist.append(('&Iuml;', '\xc3\x8f'))
-    charlist.append(('&#223;', '\xc3\x9f'))
-    charlist.append(('&szlig;', '\xc3\x9f'))
-    charlist.append(('&#038;', '&'))
-    charlist.append(('&#38;', '&'))
-    charlist.append(('&#8230;', '...'))
-    charlist.append(('&#8211;', '-'))
-    charlist.append(('&#160;', ' '))
-    charlist.append(('&#039;', "'"))
-    charlist.append(('&#39;', "'"))
-    charlist.append(('&#60;', ' '))
-    charlist.append(('&#62;', ' '))
-    charlist.append(('&lt;', '<'))
-    charlist.append(('&gt;', '>'))
-    charlist.append(('&nbsp;', ' '))
-    charlist.append(('&amp;', '&'))
-    charlist.append(('&quot;', '"'))
-    charlist.append(('&apos;', "'"))
-    charlist.append(('&#8216;', "'"))
-    charlist.append(('&#8217;', "'"))
-    charlist.append(('&8221;', '\xe2\x80\x9d'))
-    charlist.append(('&8482;', '\xe2\x84\xa2'))
-    charlist.append(('&#8203;', ''))
-    charlist.append(('&#8212;', ''))
-    charlist.append(('&#8222;', ''))
-    charlist.append(('&#8220;', ''))
-    charlist.append(('&raquo;', '"'))
-    charlist.append(('&laquo;', '"'))
-    charlist.append(('&bdquo;', '"'))
-    charlist.append(('&ldquo;', '"'))
-    for repl in charlist:
-        text = text.replace(repl[0], repl[1])
-    from re import sub as re_sub
-    text = re_sub('<[^>]+>', '', text)
-    return str(text).encode('utf-8').decode('unicode_escape')  # str needed for PLi
+    import html
+    # In Python 2, html.unescape non esiste, quindi usiamo cgi per decodificare le entità HTML comuni
+    try:
+        # Python 3
+        text = html.unescape(text)
+    except AttributeError:
+        # Python 2
+        import cgi
+        text = cgi.unescape(text)
+
+    # Lista di sostituzioni aggiuntive per entità non gestite da html.unescape/cgi.unescape
+    extra_replacements = {
+        '&#224;': 'à',
+        '&#225;': 'á',
+        '&#226;': 'â',
+        '&#228;': 'ä',
+        '&#249;': 'ù',
+        '&#250;': 'ú',
+        '&#251;': 'û',
+        '&#252;': 'ü',
+        '&#242;': 'ò',
+        '&#243;': 'ó',
+        '&#244;': 'ô',
+        '&#246;': 'ö',
+        '&#236;': 'ì',
+        '&#237;': 'í',
+        '&#238;': 'î',
+        '&#239;': 'ï',
+        '&#232;': 'è',
+        '&#233;': 'é',
+        '&#234;': 'ê',
+        '&#235;': 'ë',
+        '&#192;': 'À',
+        '&#193;': 'Á',
+        '&#194;': 'Â',
+        '&#196;': 'Ä',
+        '&#217;': 'Ù',
+        '&#218;': 'Ú',
+        '&#219;': 'Û',
+        '&#220;': 'Ü',
+        '&#210;': 'Ò',
+        '&#211;': 'Ó',
+        '&#212;': 'Ô',
+        '&#214;': 'Ö',
+        '&#204;': 'Ì',
+        '&#205;': 'Í',
+        '&#206;': 'Î',
+        '&#207;': 'Ï',
+        '&#223;': 'ß',
+        '&#8230;': '...',
+        '&#8211;': '-',
+        '&#160;': ' ',
+        '&#039;': "'",
+        '&#39;': "'",
+        '&#60;': '<',
+        '&#62;': '>',
+        '&#8216;': "'",
+        '&#8217;': "'",
+        '&#8221;': '”',
+        '&#8482;': '™',
+        '&#8203;': '',
+        '&#8212;': '—',
+        '&#8222;': '„',
+        '&#8220;': '“',
+        '&raquo;': '"',
+        '&laquo;': '"',
+        '&bdquo;': '"',
+        '&ldquo;': '“',
+        '&raquo;': '»',
+        '&laquo;': '«',
+    }
+
+    # Applicazione delle sostituzioni extra
+    for entity, replacement in extra_replacements.items():
+        text = text.replace(entity, replacement)
+
+    # Rimozione dei tag HTML
+    text = re.sub(r'<[^>]+>', '', text)
+
+    return text
 
 
 def main(session, **kwargs):

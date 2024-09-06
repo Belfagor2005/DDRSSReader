@@ -4,6 +4,7 @@
 # This Software is Free, use it where you want
 # when you want for whatever you want and modify it if you want but don't remove my copyright!
 # adapted for py3 and added fhd screens @lululla 20240524
+# recode write @lululla 20240906
 from . import _, Utils
 from .Console import Console as xConsole
 
@@ -38,14 +39,13 @@ global mynaziv
 global mydesc
 global HALIGN
 
-PY3 = False
-PY3 = sys.version_info.major >= 3
 
+PY3 = sys.version_info.major >= 3
 if PY3:
     PY3 = True
     unidecode = str
 
-currversion = '0.6'
+currversion = '0.7'
 descplugx = 'RSS Simmple by DDamir v.%s\n\nadapted for py3 by @lululla 20240524\n\n' % currversion
 inff = 'Import New from /tmp/feeds.xml'
 descplug = descplugx + inff
@@ -54,6 +54,7 @@ urlrss = ConfigText(fixed_size=False, visible_width=40)
 ssl._create_default_https_context = ssl._create_unverified_context
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS9ERFJTU1JlYWRlci9tYWluL2luc3RhbGxlci5zaA=='
 developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUvRERSU1NSZWFkZXI='
+
 
 def trazenje(t1, t2, t3, tekst):
     n0 = tekst.find(t1)
@@ -124,7 +125,7 @@ class UnesiPod(Screen):
         self['pgreen'] = Label(_('Save'))
         self['pred'] = Label(_('Close'))
         self['info'] = Label(_('Select'))
-        self['opisi'] = Label(_('Setup RSS FEED v.%s' % currversion))        
+        self['opisi'] = Label(_('Setup RSS FEED v.%s' % currversion))
         self.Update = False
         self['actions'] = NumberActionMap(['SetupActions',
                                            'TextEntryActions',
@@ -194,7 +195,7 @@ class UnesiPod(Screen):
         self.new_version = remote_version
         self.new_changelog = remote_changelog
         if float(currversion) < float(remote_version):
-        # if currversion < remote_version:
+            # if currversion < remote_version:
             self.Update = True
             # self['key_yellow'].show()
             # self['key_green'].show()
@@ -340,18 +341,26 @@ class MojRSS(Screen):
         self.rsslist = []
         self['rsslist'] = MenuList([])
         if os.path.exists('/var/ddRSS/feeds'):
-            razbi = []
-            fp = open('/var/ddRSS/feeds', 'r')
-            for line in fp.read().split('\n'):
-                if len(line.strip()) != 0:
-                    razbi = line.split(':', 1)
-                    prvi = '*** ' + razbi[0].strip() + ' ***'
-                    prvi = prvi.center(90)
-                    self.rsslist.append(prvi)
-                    self.ime.append(razbi[0])
-                    self.put.append(razbi[1])
+            try:
+                with open('/var/ddRSS/feeds', 'r') as fp:
+                    for line in fp:
+                        line = line.strip()  # Rimuove eventuali spazi vuoti
+                        if line:  # Controlla che la riga non sia vuota
+                            # Dividi la riga in due parti: nome e URL
+                            razbi = line.split(':', 1)
+                            if len(razbi) == 2:  # Controlla che ci siano esattamente due parti
+                                nome_feed = razbi[0].strip()
+                                url_feed = razbi[1].strip()
+                                # Crea la stringa formattata per la visualizzazione
+                                prvi = f'*** {nome_feed} ***'.center(90)
+                                # Aggiungi i dati alle rispettive liste
+                                self.rsslist.append(prvi)
+                                self.ime.append(nome_feed)
+                                self.put.append(url_feed)
 
-            fp.close()
+            except Exception as e:
+                print(f'Errore durante la lettura del file: {e}')
+
         self.timer = eTimer()
         if os.path.exists('/var/lib/dpkg/status'):
             self.timer_conn = self.timer.timeout.connect(self.showMenu)
@@ -381,144 +390,166 @@ class MojRSS(Screen):
         self.put = []
         self.rsslist = []
         if os.path.exists('/var/ddRSS/feeds'):
-            razbi = []
-            fp = open('/var/ddRSS/feeds', 'r')
-            for line in fp.read().split('\n'):
-                if len(line.strip()) != 0:
-                    razbi = line.split(':', 1)
-                    prvi = '*** ' + razbi[0].strip() + ' ***'
-                    prvi = prvi.center(90)
-                    self.rsslist.append(prvi)
-                    self.ime.append(razbi[0])
-                    self.put.append(razbi[1])
-            fp.close()
+            try:
+                with open('/var/ddRSS/feeds', 'r') as fp:
+                    for line in fp:
+                        line = line.strip()  # Rimuove spazi in eccesso
+                        if line:
+                            # Dividi la linea in nome e URL
+                            razbi = line.split(':', 1)
+                            if len(razbi) == 2:  # Verifica che ci siano due parti
+                                nome_feed = razbi[0].strip()
+                                url_feed = razbi[1].strip()
+
+                                # Formatta il nome del feed e aggiungilo alla lista
+                                primo = f'*** {nome_feed} ***'.center(90)
+                                self.rsslist.append(primo)
+                                self.ime.append(nome_feed)
+                                self.put.append(url_feed)
+            except Exception as e:
+                print(f'Errore durante la lettura del file: {e}')
+                self.session.open(MessageBox, f"Errore nel ricaricamento dei feed: {e}", MessageBox.TYPE_ERROR, timeout=5)
         self.showMenu()
 
     def Blue(self):
-        prvi = ''
-        if os.path.exists('/tmp/feeds.xml') is True:
+        if os.path.exists('/tmp/feeds.xml'):
             self.rsslist = []
             self.ime = []
             self.put = []
-            fp1 = open('/var/ddRSS/feeds', 'w')
-            fp = open('/tmp/feeds.xml', 'r')
-            for line in fp.read().split('\n'):
-                n0, n1, n2 = trazenje('<name>', '</name>', '', line)
-                if n0 > -1:
-                    ut = uzmitekst(n0 + 6, n1, line)
-                    linija = ut + ':'
-                    prvi = ut
-                n0, n1, n2 = trazenje('<url>', '</url>', '', line)
-                if n0 > -1:
-                    ut = uzmitekst(n0 + 5, n1, line)
-                    linija = linija + ut
-                    fp1.write(linija + '\n')
-                    razbi = []
-                    razbi = linija.split(':', 1)
-                    prvi = '*** ' + razbi[0].strip() + ' ***'
-                    prvi = prvi.center(90)
-                    self.rsslist.append(prvi)
-                    self.ime.append(razbi[0])
-                    self.put.append(razbi[1])
-
-            fp.close()
-            fp1.close()
-            self.showMenu()
+            try:
+                # Apri i file in modo sicuro con 'with'
+                with open('/tmp/feeds.xml', 'r') as fp, open('/var/ddRSS/feeds', 'w') as fp1:
+                    primo = ''
+                    # Leggi il file XML linea per linea
+                    for line in fp.read().split('\n'):
+                        line = line.strip()  # Rimuovi spazi in eccesso
+                        # Estrai il nome
+                        n0, n1, n2 = trazenje('<name>', '</name>', '', line)
+                        if n0 > -1:
+                            nome = uzmitekst(n0 + 6, n1, line).strip()
+                            linea = nome + ':'
+                            primo = nome
+                        # Estrai l'URL
+                        n0, n1, n2 = trazenje('<url>', '</url>', '', line)
+                        if n0 > -1:
+                            url = uzmitekst(n0 + 5, n1, line).strip()
+                            linea += url
+                            fp1.write(linea + '\n')
+                            # Divide la riga in nome e URL
+                            nome_url = linea.split(':', 1)
+                            nome_feed = nome_url[0].strip()
+                            url_feed = nome_url[1].strip()
+                            # Formatta il nome del feed
+                            primo = f'*** {nome_feed} ***'.center(90)
+                            self.rsslist.append(primo)
+                            self.ime.append(nome_feed)
+                            self.put.append(url_feed)
+                # Mostra il menu dopo aver caricato i dati
+                self.showMenu()
+            except Exception as e:
+                # In caso di errore, stampa il messaggio
+                print(f'Errore: {e}')
+                messaggio_errore = 'Errore durante la lettura del file!'
+                self.session.open(MessageBox, messaggio_errore, MessageBox.TYPE_INFO, timeout=5)
         else:
-            pporuka = 'no data, bad xml!'
+            # Se il file XML non esiste, mostra un messaggio di errore
+            pporuka = 'Nessun dato disponibile, file XML non valido!'
             self.session.open(MessageBox, pporuka, MessageBox.TYPE_INFO, timeout=5)
 
     def izlaz(self):
-        fp = open('/var/ddRSS/feeds', 'w')
-        for ide in range(0, len(self.rsslist)):
-            fp.write(self.ime[ide] + ':' + self.put[ide] + '\n')
-
-        fp.close()
+        # Apri il file in modo sicuro
+        with open('/var/ddRSS/feeds', 'w') as fp:
+            # Usa zip per combinare le liste 'ime' e 'put' e scrivere direttamente
+            for nome, url in zip(self.ime, self.put):
+                fp.write(f'{nome}:{url}\n')
+        # Chiudi l'interfaccia
         self.close()
+
+    '''
+    # def izlaz(self):
+        # fp = open('/var/ddRSS/feeds', 'w')
+        # for ide in range(0, len(self.rsslist)):
+            # fp.write(self.ime[ide] + ':' + self.put[ide] + '\n')
+        # fp.close()
+        # self.close()
+    '''
 
     def showMenu(self):
         self['rsslist'].setList(self.rsslist)
 
     def okClicked(self):
-        global naslov
+        global titolo  # Titolo globale
         selindex = self['rsslist'].getSelectedIndex()
-        os.system('wget -O /tmp/rsstr ' + self.put[selindex])
+        # Scarica il file RSS
+        os.system(f'wget -O /tmp/rsstr {self.put[selindex]}')
         os.system('sync')
-        if os.path.exists('/tmp/rsstr') is True:
-            line = ''
-            naslov = ''
-            fp1 = open('/tmp/lirss', 'w')
-            fp = open('/tmp/rsstr', 'r')
-            linija = ''
-            for line in fp.read().split('\n'):
-                line = line.strip()
-                line = line.replace('<![CDATA[', '')
-                line = line.replace(']]>', '')
-                linija = linija + line.strip()
+        # Verifica se il file è stato scaricato correttamente
+        if os.path.exists('/tmp/rsstr'):
+            titolo = ''
+            contenuto_completo = ''
+            try:
+                # Leggi il file scaricato e rimuovi CDATA e spazi in eccesso
+                with open('/tmp/rsstr', 'r') as fp:
+                    for riga in fp.read().split('\n'):
+                        riga = riga.strip().replace('<![CDATA[', '').replace(']]>', '')
+                        contenuto_completo += riga.strip()
 
-            line = linija
-            fp.close()
-            if len(line) != 0:
-                n0, n1, n2 = trazenje('encoding=', '?><', 'title', line)
-                if n0 > -1:
-                    encod = uzmitekst(n0 + 9, n1, line)
-                else:
-                    encod = ''
-                if n2 > -1:
-                    line = skrati(n2 + 6, line)
-                n0, n1, n2 = trazenje('</title>', '<item>', '', line)
-                if n0 > -1:
-                    naslov = uzmitekst(0, n0, line)
-                    line = skrati(n1, line)
-                    fp1.write('0<DD>' + encod + '<DD>' + naslov + '<DD>none\n')
-                razbi = []
-                razbi = line.split('<item>')
-                del razbi[0]
-                itemnas = []
-                datum = []
-                desc = []
-                for ide in range(0, len(razbi)):
-                    n0, n1, n2 = trazenje('<title>', '</title>', '', razbi[ide])
-                    if n0 > -1:
-                        # if encod != '':
-                            # proba = uzmitekst(n0 + 7, n1, razbi[ide]).decode(encod).encode('utf8')
-                        # else:
-                            # proba = uzmitekst(n0 + 7, n1, razbi[ide])
-                        proba = uzmitekst(n0 + 7, n1, razbi[ide])  # lululla
-                        itemnas.append(proba)
-                    n0, n1, n2 = trazenje('', '<pubDate>', '</pubDate>', razbi[ide])
-                    if n1 > -1:
-                        datum.append(uzmitekst(n1 + 9, n2, razbi[ide]))
-                    else:
-                        datum.append('no date announced')
-                    n0, n1, n2 = trazenje('<description>', '</description>', "alt='' /&gt;", razbi[ide])
-                    slika = 'none'
-                    if n2 > -1:
-                        n0 = n2
-                        n3, n4, n5 = trazenje('img src=', '', "alt='' /&gt;", razbi[ide])
-                        if n3 > -1 and n5 > -1:
-                            slika = uzmitekst(n3 + 8, n5 - 1, razbi[ide])
-                    elif slika == 'none':
-                        print('ima')
-                        n3, n4, n5 = trazenje('src=&quot;', '&lt;br', '&quot; alt=&quot;', razbi[ide])
-                        if n3 > -1 and n5 > -1:
-                            slika = uzmitekst(n3 + 10, n5, razbi[ide])
-                        if n4 > -1:
-                            n1 = n4
-                    # if encod != '':
-                        # proba = uzmitekst(n0 + 13, n1, razbi[ide]).decode(encod).encode('utf8')
-                    # else:
-                        # proba = uzmitekst(n0 + 13, n1, razbi[ide])
-                    proba = uzmitekst(n0 + 13, n1, razbi[ide])  # lululla
+                # Scrivi nel file di output
+                with open('/tmp/lirss', 'w') as fp1:
+                    if contenuto_completo:
+                        # Trova encoding e titolo
+                        n0, n1, n2 = trazenje('encoding=', '?><', 'title', contenuto_completo)
+                        codifica = uzmitekst(n0 + 9, n1, contenuto_completo) if n0 > -1 else ''
+                        if n2 > -1:
+                            contenuto_completo = skrati(n2 + 6, contenuto_completo)
 
-                    proba = proba.replace('&amp;nbsp;', '')
-                    desc.append(proba)
-                    fp1.write(itemnas[ide] + '<DD>' + datum[ide] + '<DD>' + desc[ide] + '<DD>' + slika + '\n')
+                        # Trova il titolo del feed
+                        n0, n1, n2 = trazenje('</title>', '<item>', '', contenuto_completo)
+                        if n0 > -1:
+                            titolo = uzmitekst(0, n0, contenuto_completo)
+                            contenuto_completo = skrati(n1, contenuto_completo)
+                            fp1.write(f'0<DD>{codifica}<DD>{titolo}<DD>nessuno\n')
+
+                        # Estrai gli elementi del feed
+                        elementi = contenuto_completo.split('<item>')[1:]  # Rimuovi il primo elemento vuoto
+                        itemnas, date, descrizioni = [], [], []
+
+                        for elemento in elementi:
+                            # Trova il titolo dell'elemento
+                            n0, n1, n2 = trazenje('<title>', '</title>', '', elemento)
+                            if n0 > -1:
+                                titolo_elemento = uzmitekst(n0 + 7, n1, elemento)
+                                itemnas.append(titolo_elemento)
+
+                            # Trova la data di pubblicazione
+                            n0, n1, n2 = trazenje('', '<pubDate>', '</pubDate>', elemento)
+                            data = uzmitekst(n1 + 9, n2, elemento) if n1 > -1 else 'nessuna data disponibile'
+                            date.append(data)
+
+                            # Trova la descrizione e l'immagine
+                            n0, n1, n2 = trazenje('<description>', '</description>', "alt='' /&gt;", elemento)
+                            immagine = 'nessuna'
+                            if n2 > -1:
+                                n3, n4, n5 = trazenje('img src=', '', "alt='' /&gt;", elemento)
+                                immagine = uzmitekst(n3 + 8, n5 - 1, elemento) if n3 > -1 and n5 > -1 else 'nessuna'
+                            else:
+                                n3, n4, n5 = trazenje('src=&quot;', '&lt;br', '&quot; alt=&quot;', elemento)
+                                immagine = uzmitekst(n3 + 10, n5, elemento) if n3 > -1 and n5 > -1 else 'nessuna'
+
+                            # Trova e pulisci la descrizione
+                            descrizione = uzmitekst(n0 + 13, n1, elemento).replace('&amp;nbsp;', '')
+                            descrizioni.append(descrizione)
+
+                            # Scrivi nel file
+                            fp1.write(f'{titolo_elemento}<DD>{data}<DD>{descrizione}<DD>{immagine}\n')
+
+                # Apri la vista RSS
                 self.session.open(PregledRSS)
-            else:
-                pporuka = 'Gre\xc5\xa1ka prilikom konektiranja!\nPoku\xc5\xa1ajte kasnije.'
-                self.session.open(MessageBox, pporuka, MessageBox.TYPE_INFO, timeout=5)
-            fp1.close()
+
+            except Exception as e:
+                print(f'Errore: {e}')
+                messaggio_errore = 'Errore durante la connessione!\nRiprova più tardi.'
+                self.session.open(MessageBox, messaggio_errore, MessageBox.TYPE_INFO, timeout=5)
 
 
 class PregledRSS(Screen):
@@ -591,26 +622,23 @@ class PregledRSS(Screen):
         self.datum = []
         self.desc = []
         self.slika = []
-        if os.path.exists('/tmp/lirss') is True:
+        if os.path.exists('/tmp/lirss'):
             prvi = 1
             self.rsslist = []
-            fp = open('/tmp/lirss', 'r')
-            for line in fp.read().split('\n'):
-                if len(line) != 0:
-                    razbi = []
-                    razbi = line.split('<DD>')
-                    if prvi == 1:
-                        prvi = 0
-                        naslov = razbi[2]
-                        # naslov = naslov.center(90)
-                    else:
-                        self.itemnas.append(razbi[0])
-                        self.datum.append(decodeHtml(razbi[1]))
-                        self.desc.append(decodeHtml(razbi[2]))
-                        self.slika.append(razbi[3])
-                        self.rsslist.append(razbi[0])
+            with open('/tmp/lirss', 'r', encoding='utf-8') as fp:  # Use 'with' for better file handling
+                for line in fp.read().split('\n'):
+                    if len(line) != 0:
+                        razbi = line.split('<DD>')
+                        if prvi == 1:
+                            prvi = 0
+                            naslov = razbi[2]
+                        else:
+                            self.itemnas.append(razbi[0])
+                            self.datum.append(decodeHtml(razbi[1]))
+                            self.desc.append(decodeHtml(razbi[2]))
+                            self.slika.append(razbi[3])
+                            self.rsslist.append(razbi[0])
 
-            fp.close()
         self['rsspreg'].setList(self.rsslist)
         self.showMenu()
 
@@ -703,10 +731,12 @@ class CijeliTekst(Screen):
                                                          'down': self.pageDown,
                                                          'cancel': self.close,
                                                          'ok': self.Gotovo}, -1)
+        '''
         # if myslika != 'none':
             # os.system("wget -O /tmp/slika.jpg '" + str(myslika) + "'")
             # if os.patch.exists('/tmp/slika.jpg'):
                 # self['slikica'] = Pixmap()
+        '''
         txtxt = mydesc
         self['opisi'] = ScrollLabel()
         self['opisi'].setText(decodeHtml(txtxt))
@@ -724,87 +754,63 @@ class CijeliTekst(Screen):
     def Gotovo(self):
         self.close()
 
+
 def decodeHtml(text):
-    import html
-    # In Python 2, html.unescape non esiste, quindi usiamo cgi per decodificare le entità HTML comuni
-    try:
-        # Python 3
+    import re
+    import six
+    # List of HTML and Unicode entities to replace
+    if six.PY2:
+        from six.moves import (html_parser)
+        h = html_parser.HTMLParser()
+        text = h.unescape(text.decode('utf8')).encode('utf8')
+    else:
+        import html
         text = html.unescape(text)
-    except AttributeError:
-        # Python 2
-        import cgi
-        text = cgi.unescape(text)
 
-    # Lista di sostituzioni aggiuntive per entità non gestite da html.unescape/cgi.unescape
-    extra_replacements = {
-        '&#224;': 'à',
-        '&#225;': 'á',
-        '&#226;': 'â',
-        '&#228;': 'ä',
-        '&#249;': 'ù',
-        '&#250;': 'ú',
-        '&#251;': 'û',
-        '&#252;': 'ü',
-        '&#242;': 'ò',
-        '&#243;': 'ó',
-        '&#244;': 'ô',
-        '&#246;': 'ö',
-        '&#236;': 'ì',
-        '&#237;': 'í',
-        '&#238;': 'î',
-        '&#239;': 'ï',
-        '&#232;': 'è',
-        '&#233;': 'é',
-        '&#234;': 'ê',
-        '&#235;': 'ë',
-        '&#192;': 'À',
-        '&#193;': 'Á',
-        '&#194;': 'Â',
-        '&#196;': 'Ä',
-        '&#217;': 'Ù',
-        '&#218;': 'Ú',
-        '&#219;': 'Û',
-        '&#220;': 'Ü',
-        '&#210;': 'Ò',
-        '&#211;': 'Ó',
-        '&#212;': 'Ô',
-        '&#214;': 'Ö',
-        '&#204;': 'Ì',
-        '&#205;': 'Í',
-        '&#206;': 'Î',
-        '&#207;': 'Ï',
-        '&#223;': 'ß',
-        '&#8230;': '...',
-        '&#8211;': '-',
-        '&#160;': ' ',
-        '&#039;': "'",
-        '&#39;': "'",
-        '&#60;': '<',
-        '&#62;': '>',
-        '&#8216;': "'",
-        '&#8217;': "'",
-        '&#8221;': '”',
-        '&#8482;': '™',
-        '&#8203;': '',
-        '&#8212;': '—',
-        '&#8222;': '„',
-        '&#8220;': '“',
-        '&raquo;': '"',
-        '&laquo;': '"',
-        '&bdquo;': '"',
-        '&ldquo;': '“',
-        '&raquo;': '»',
-        '&laquo;': '«',
-    }
-
-    # Applicazione delle sostituzioni extra
-    for entity, replacement in extra_replacements.items():
-        text = text.replace(entity, replacement)
-
-    # Rimozione dei tag HTML
-    text = re.sub(r'<[^>]+>', '', text)
-
-    return text
+    charlist = [
+        ('&#034;', '"'), ('&#038;', '&'), ('&#039;', "'"), ('&#060;', ' '),
+        ('&#062;', ' '), ('&#160;', ' '), ('&#174;', ''), ('&#192;', 'À'),
+        ('&#193;', 'Á'), ('&#194;', 'Â'), ('&#196;', 'Ä'), ('&#204;', 'Ì'),
+        ('&#205;', 'Í'), ('&#206;', 'Î'), ('&#207;', 'Ï'), ('&#210;', 'Ò'),
+        ('&#211;', 'Ó'), ('&#212;', 'Ô'), ('&#214;', 'Ö'), ('&#217;', 'Ù'),
+        ('&#218;', 'Ú'), ('&#219;', 'Û'), ('&#220;', 'Ü'), ('&#223;', 'ß'),
+        ('&#224;', 'à'), ('&#225;', 'á'), ('&#226;', 'â'), ('&#228;', 'ä'),
+        ('&#232;', 'è'), ('&#233;', 'é'), ('&#234;', 'ê'), ('&#235;', 'ë'),
+        ('&#236;', 'ì'), ('&#237;', 'í'), ('&#238;', 'î'), ('&#239;', 'ï'),
+        ('&#242;', 'ò'), ('&#243;', 'ó'), ('&#244;', 'ô'), ('&#246;', 'ö'),
+        ('&#249;', 'ù'), ('&#250;', 'ú'), ('&#251;', 'û'), ('&#252;', 'ü'),
+        ('&#8203;', ''), ('&#8211;', '-'), ('&#8212;', '—'), ('&#8216;', "'"),
+        ('&#8217;', "'"), ('&#8220;', '"'), ('&#8221;', '"'), ('&#8222;', ','),
+        ('&#8230;', '...'), ('&#x21;', '!'), ('&#x26;', '&'), ('&#x27;', "'"),
+        ('&#x3f;', '?'), ('&#xB7;', '·'), ('&#xC4;', 'Ä'), ('&#xD6;', 'Ö'),
+        ('&#xDC;', 'Ü'), ('&#xDF;', 'ß'), ('&#xE4;', 'ä'), ('&#xE9;', 'é'),
+        ('&#xF6;', 'ö'), ('&#xF8;', 'ø'), ('&#xFB;', 'û'), ('&#xFC;', 'ü'),
+        ('&8221;', '”'), ('&8482;', '™'), ('&Aacute;', 'Á'), ('&Acirc;', 'Â'),
+        ('&Agrave;', 'À'), ('&Auml;', 'Ä'), ('&Iacute;', 'Í'), ('&Icirc;', 'Î'),
+        ('&Igrave;', 'Ì'), ('&Iuml;', 'Ï'), ('&Oacute;', 'Ó'), ('&Ocirc;', 'Ô'),
+        ('&Ograve;', 'Ò'), ('&Ouml;', 'Ö'), ('&Uacute;', 'Ú'), ('&Ucirc;', 'Û'),
+        ('&Ugrave;', 'Ù'), ('&Uuml;', 'Ü'), ('&aacute;', 'á'), ('&acirc;', 'â'),
+        ('&acute;', "'"), ('&agrave;', 'à'), ('&amp;', '&'), ('&apos;', "'"),
+        ('&auml;', 'ä'), ('&bdquo;', '"'), ('&eacute;', 'é'), ('&ecirc;', 'ê'),
+        ('&egrave;', 'è'), ('&euml;', 'ë'), ('&gt;', '>'), ('&hellip;', '...'),
+        ('&iacute;', 'í'), ('&icirc;', 'î'), ('&igrave;', 'ì'), ('&iuml;', 'ï'),
+        ('&laquo;', '"'), ('&ldquo;', '"'), ('&lsquo;', "'"), ('&lt;', '<'),
+        ('&mdash;', '—'), ('&nbsp;', ' '), ('&ndash;', '-'), ('&oacute;', 'ó'),
+        ('&ocirc;', 'ô'), ('&ograve;', 'ò'), ('&ouml;', 'ö'), ('&quot;', '"'),
+        ('&raquo;', '"'), ('&rsquo;', "'"), ('&szlig;', 'ß'), ('&uacute;', 'ú'),
+        ('&ucirc;', 'û'), ('&ugrave;', 'ù'), ('&uuml;', 'ü'), ('&ntilde;', '~'),
+        ('&equals;', '='), ('&quest;', '?'), ('&comma;', ','), ('&period;', '.'),
+        ('&colon;', ':'), ('&lpar;', '('), ('&rpar;', ')'), ('&excl;', '!'),
+        ('&dollar;', '$'), ('&num;', '#'), ('&ast;', '*'), ('&lowbar;', '_'),
+        ('&lsqb;', '['), ('&rsqb;', ']'), ('&half;', '1/2'), ('&DiacriticalTilde;', '~'),
+        ('&OpenCurlyDoubleQuote;', '"'), ('&CloseCurlyDoubleQuote;', '"'),
+    ]
+    # Replacing all HTML entities with their respective characters
+    for repl in charlist:
+        text = text.replace(repl[0], repl[1])
+    # Remove any remaining HTML tags
+    text = re.sub('<[^>]+>', '', text)
+    return text.strip()
 
 
 def main(session, **kwargs):

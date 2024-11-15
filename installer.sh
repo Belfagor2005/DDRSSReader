@@ -1,7 +1,6 @@
 #!/bin/bash
 ## setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/DDRSSReader/main/installer.sh -O - | /bin/sh
-exec > >(tee -a /tmp/DDRSSReader_debug.txt) 2>&1
-set -x
+
 ## Only This 2 lines to edit with new version ######
 version='0.7'
 changelog='\nAdd Sat-universe\nRecode python style'

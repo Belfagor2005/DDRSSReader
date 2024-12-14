@@ -352,14 +352,14 @@ class MojRSS(Screen):
                                 nome_feed = razbi[0].strip()
                                 url_feed = razbi[1].strip()
                                 # Crea la stringa formattata per la visualizzazione
-                                prvi = f'*** {nome_feed} ***'.center(90)
+                                prvi = '*** {0} ***'.center(90).format(nome_feed)
                                 # Aggiungi i dati alle rispettive liste
                                 self.rsslist.append(prvi)
                                 self.ime.append(nome_feed)
                                 self.put.append(url_feed)
 
             except Exception as e:
-                print(f'Errore durante la lettura del file: {e}')
+                print('Errore durante la lettura del file:', e)
 
         self.timer = eTimer()
         if os.path.exists('/var/lib/dpkg/status'):
@@ -407,7 +407,7 @@ class MojRSS(Screen):
                                 self.ime.append(nome_feed)
                                 self.put.append(url_feed)
             except Exception as e:
-                print(f'Errore durante la lettura del file: {e}')
+                print('Errore durante la lettura del file:', e)
                 self.session.open(MessageBox, f"Errore nel ricaricamento dei feed: {e}", MessageBox.TYPE_ERROR, timeout=5)
         self.showMenu()
 
@@ -448,7 +448,7 @@ class MojRSS(Screen):
                 self.showMenu()
             except Exception as e:
                 # In caso di errore, stampa il messaggio
-                print(f'Errore: {e}')
+                print('Errore:', e)
                 messaggio_errore = 'Errore durante la lettura del file!'
                 self.session.open(MessageBox, messaggio_errore, MessageBox.TYPE_INFO, timeout=5)
         else:
@@ -547,7 +547,7 @@ class MojRSS(Screen):
                 self.session.open(PregledRSS)
 
             except Exception as e:
-                print(f'Errore: {e}')
+                print('Errore:', e)
                 messaggio_errore = 'Errore durante la connessione!\nRiprova più tardi.'
                 self.session.open(MessageBox, messaggio_errore, MessageBox.TYPE_INFO, timeout=5)
 

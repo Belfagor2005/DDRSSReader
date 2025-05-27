@@ -5,14 +5,12 @@
 # when you want for whatever you want and modify it if you want but don't remove my copyright!
 # adapted for py3 and added fhd screens @lululla 20240524
 # recode write @lululla 20240906
-from . import _, Utils
-from .Console import Console as xConsole
 
 from Components.ActionMap import (ActionMap, NumberActionMap)
 from Components.ConfigList import ConfigList
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.Pixmap import Pixmap
+# from Components.Pixmap import Pixmap
 from Components.ScrollLabel import ScrollLabel
 from Components.config import (
 	ConfigText,
@@ -33,6 +31,9 @@ import ssl
 import json
 import sys
 from datetime import datetime
+
+from . import _, Utils
+from .Console import Console as xConsole
 
 global mydatum
 global mynaziv
@@ -559,21 +560,23 @@ class PregledRSS(Screen):
 						</screen>'''
 
 		Screen.__init__(self, session)
-		self['actions'] = NumberActionMap(['SetupActions',
-										   'DirectionActions',
-										   'ListboxActions'], {
-										  'up': self.keyUp,
-										  'down': self.keyDown,
-										  'left': self.pageUp,
-										  'right': self.pageDown,
-										  'upRepeated': self.keyUp,
-										  'downRepeated': self.keyDown,
-										  'leftRepeated': self.keyUp,
-										  'rightRepeated': self.keyDown,
-										  'pageUp': self.pageUp,
-										  'pageDown': self.pageDown,
-										  'ok': self.OK,
-										  'cancel': self.izlaz}, -2)
+		self['actions'] = NumberActionMap(
+			['SetupActions', 'DirectionActions', 'ListboxActions'], {
+				'up': self.keyUp,
+				'down': self.keyDown,
+				'left': self.pageUp,
+				'right': self.pageDown,
+				'upRepeated': self.keyUp,
+				'downRepeated': self.keyDown,
+				'leftRepeated': self.keyUp,
+				'rightRepeated': self.keyDown,
+				'pageUp': self.pageUp,
+				'pageDown': self.pageDown,
+				'ok': self.OK,
+				'cancel': self.izlaz
+			}, -2
+		)
+
 		# self['slikica'] = Pixmap()
 		self['info'] = Label(_('Select'))
 		prviput = 0

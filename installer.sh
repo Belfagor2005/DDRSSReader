@@ -20,7 +20,8 @@ else
     OSTYPE=Dream
 fi
 
-if ! command -v wget >/dev/null; then
+# Install wget if missing
+if ! command -v wget >/dev/null 2>&1; then
     if [ "$OSTYPE" = "DreamOs" ]; then
         apt-get update && apt-get install -y wget || { echo "Failed to install wget"; exit 1; }
     else
@@ -28,6 +29,7 @@ if ! command -v wget >/dev/null; then
     fi
 fi
 
+# Detect python version and requests package name
 if python --version 2>&1 | grep -q '^Python 3\.'; then
     PYTHON=PY3
     Packagerequests=python3-requests
@@ -36,6 +38,7 @@ else
     Packagerequests=python-requests
 fi
 
+# Install python requests package if missing
 if ! grep -qs "Package: $Packagerequests" "$STATUS"; then
     echo "Installing $Packagerequests..."
     if [ "$OSTYPE" = "DreamOs" ]; then
@@ -45,6 +48,7 @@ if ! grep -qs "Package: $Packagerequests" "$STATUS"; then
     fi
 fi
 
+# Cleanup old temp and plugin folders/files
 [ -d "$TMPPATH" ] && rm -rf "$TMPPATH"
 [ -f "$FILEPATH" ] && rm -f "$FILEPATH"
 [ -d "$PLUGINPATH" ] && rm -rf "$PLUGINPATH"
@@ -52,26 +56,32 @@ fi
 mkdir -p "$TMPPATH" || { echo "Failed to create temp directory"; exit 1; }
 cd "$TMPPATH" || exit 1
 
+# Download plugin archive
 wget --no-check-certificate 'https://github.com/Belfagor2005/DDRSSReader/archive/refs/heads/main.tar.gz' -O "$FILEPATH" || {
     echo "Download failed"; exit 1;
 }
 
+# Extract archive
 tar -xzf "$FILEPATH" -C /tmp/ || {
     echo "Extraction failed"; exit 1;
 }
 
+# Copy files to system
 cp -r /tmp/DDRSSReader-main/usr/ / || {
     echo "Copy failed"; exit 1;
 }
 
+# Verify plugin installation
 if [ ! -d "$PLUGINPATH" ]; then
     echo "Installation failed: $PLUGINPATH missing"
     exit 1
 fi
 
+# Cleanup temp files
 rm -rf "$TMPPATH" "$FILEPATH" /tmp/DDRSSReader-main
 sync
 
+# System info
 box_type=$(head -n 1 /etc/hostname 2>/dev/null || echo "Unknown")
 FILE="/etc/image-version"
 distro_value=$(grep '^distro=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
@@ -86,5 +96,11 @@ PYTHON: $python_vers
 IMAGE: ${distro_value:-Unknown} ${distro_version:-Unknown}"
 
 sleep 3
-[ -f /usr/bin/enigma2 ] && killall -9 enigma2 || init 4 && sleep 2 && init 3
+# Restart Enigma2 or fallback to init restart
+if [ -f /usr/bin/enigma2 ]; then
+    killall -9 enigma2
+else
+    init 4 && sleep 2 && init 3
+fi
+
 exit 0

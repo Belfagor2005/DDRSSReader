@@ -1,11 +1,11 @@
 Package: enigma2-plugin-extensions-ddrssreader
-Version: 0.7
+Version: 0.8
 Section: misc
 Priority: optional
 Architecture: all
 Maintainer: Lululla
 Description: Show current RSS reader (c) DDamir
-Source: edit by lululla
+Source: enigma2-plugin-extensions-ddrssreader
 Homepage: linuxsat-support.com
 OE: 2.0
 License: GPLv2

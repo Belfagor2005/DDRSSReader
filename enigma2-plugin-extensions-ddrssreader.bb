@@ -6,7 +6,7 @@ LICENSE = "proprietary"
 
 require conf/license/license-gplv2.inc
 
-inherit gitpkgv
+inherit allarch gitpkgv
 
 SRCREV = "${AUTOREV}"
 PV = "1.0+git${SRCPV}"
@@ -18,7 +18,7 @@ SRC_URI = "git://github.com/Belfagor2005/DDRSSReader.git;protocol=https;branch=m
 
 S = "${WORKDIR}/git"
 
-FILES_${PN} = "/usr/*"
+FILES:${PN} = "/usr/*"
 
 do_install() {
     cp -rp ${S}/usr* /var/* /tmp/* ${D}/ 

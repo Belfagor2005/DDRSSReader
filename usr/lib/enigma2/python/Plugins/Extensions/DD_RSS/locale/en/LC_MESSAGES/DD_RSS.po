@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: stvcl\n"
-"Report-Msgid-Bugs-To: Lululla <ekekaz@gmail.com>\n"
-"POT-Creation-Date: 2024-07-16 13:07+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-07-16 13:07+0200\n"
 "Last-Translator: Lululla <ekekaz@gmail.com>\n"
 "Language-Team: lululla\n"
@@ -16,111 +16,41 @@ msgstr ""
 "X-Poedit-SourceCharset: iso-8859-1\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: DD_RSS/Console.py:63
-msgid "Cancel"
-msgstr ""
-
-#: DD_RSS/Console.py:64
-msgid "Hide"
-msgstr ""
-
-#: DD_RSS/Console.py:77
-msgid "Console"
-msgstr ""
-
-#: DD_RSS/Console.py:96
-msgid "Execution progress"
-msgstr ""
-
-#: DD_RSS/Console.py:119
-msgid "Execution finished!!"
-msgstr ""
-
-#: DD_RSS/Console.py:125
-msgid ""
-"\n"
-"Press OK or Exit to abort!"
-msgstr ""
-
-#: DD_RSS/Console.py:126
-msgid "Exit"
-msgstr ""
-
-#: DD_RSS/Console.py:141
-msgid "Cancel execution?"
-msgstr ""
-
-#: DD_RSS/plugin.py:121
-msgid "Keyboard"
-msgstr ""
-
-#: DD_RSS/plugin.py:122
-msgid "Update"
-msgstr ""
-
-#: DD_RSS/plugin.py:123
-msgid "Save"
-msgstr ""
-
-#: DD_RSS/plugin.py:124
-msgid "Close"
-msgstr ""
-
-#: DD_RSS/plugin.py:125 DD_RSS/plugin.py:351 DD_RSS/plugin.py:589
-#: DD_RSS/plugin.py:715
-msgid "Select"
-msgstr ""
-
-#: DD_RSS/plugin.py:126
-#, python-format
-msgid "Setup RSS FEED v.%s"
-msgstr ""
-
-#: DD_RSS/plugin.py:216
-#, python-format
-msgid ""
-"New version %s is available\n"
-"\n"
-"Changelog: %s\n"
-"\n"
-"Press info_long or yellow_long button to start force updating."
-msgstr ""
-
-#: DD_RSS/plugin.py:221
-#, python-format
-msgid ""
-"New version %s is available.\n"
-"\n"
-"Changelog: %s \n"
-"\n"
-"Do you want to install it now?"
-msgstr ""
-
-#: DD_RSS/plugin.py:223
-msgid "Congrats! You already have the latest version..."
-msgstr ""
-
-#: DD_RSS/plugin.py:233
-#, python-format
-msgid "Do you want to install update ( %s ) now?"
-msgstr ""
-
-#: DD_RSS/plugin.py:242
-msgid "Update Aborted!"
-msgstr ""
-
-#: DD_RSS/plugin.py:347
-msgid "Delete"
-msgstr ""
-
-#: DD_RSS/plugin.py:348
 msgid "Add"
 msgstr ""
 
-#: DD_RSS/plugin.py:349
+msgid "Close"
+msgstr ""
+
+msgid "Congrats! You already have the latest version..."
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Do you want to install update ( %s ) now?"
+msgstr ""
+
 msgid "Edit"
 msgstr ""
 
-#: DD_RSS/plugin.py:350
 msgid "Import"
+msgstr ""
+
+msgid "Keyboard"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Setup RSS FEED v.%s"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Update Aborted!"
 msgstr ""

@@ -31,7 +31,7 @@ import json
 import sys
 from datetime import datetime
 
-from . import _, Utils
+from . import _, Utils, __version__
 from .Console import Console as xConsole
 
 global mydatum
@@ -45,8 +45,7 @@ if PY3:
     PY3 = True
     unidecode = str
 
-currversion = '0.8'
-descplugx = 'RSS Simmple by DDamir v.%s\n\nadapted for py3 by @lululla 20240524\n\n' % currversion
+descplugx = 'RSS Simmple by DDamir v.%s\n\nadapted for py3 by @lululla 20240524\n\n' % __version__
 inff = 'Import New from /tmp/feeds.xml'
 descplug = descplugx + inff
 nazrss = ConfigText(fixed_size=False, visible_width=40)
@@ -155,7 +154,7 @@ class UnesiPod(Screen):
         self['pgreen'] = Label(_('Save'))
         self['pred'] = Label(_('Close'))
         self['info'] = Label(_('Select'))
-        self['opisi'] = Label(_('Setup RSS FEED v.%s' % currversion))
+        self['opisi'] = Label(_('Setup RSS FEED v.%s' % __version__))
         self.Update = False
         self["actions"] = NumberActionMap(
             [
@@ -234,7 +233,7 @@ class UnesiPod(Screen):
                     break
         self.new_version = remote_version
         self.new_changelog = remote_changelog
-        if float(currversion) < float(remote_version):
+        if float(__version__) < float(remote_version):
             self.Update = True
             self.session.open(
                 MessageBox,
@@ -915,14 +914,14 @@ def Plugins(**kwargs):
         PluginDescriptor(
             name='RSS by DD',
             description='RSS Simmple by DDamir ver.%s' %
-            currversion,
+            __version__,
             icon='rss.png',
             where=PluginDescriptor.WHERE_PLUGINMENU,
             fnc=main),
         PluginDescriptor(
             name='RSS by DD',
             description='RSS Simple by DDamir ver.%s' %
-            currversion,
+            __version__,
             icon='rss.png',
             where=PluginDescriptor.WHERE_EXTENSIONSMENU,
             fnc=main)]

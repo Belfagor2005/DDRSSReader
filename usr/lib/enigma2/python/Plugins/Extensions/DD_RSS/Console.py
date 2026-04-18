@@ -4,21 +4,34 @@
 # mod Lululla 20240720
 
 from __future__ import print_function
+# from . import _
 from enigma import eConsoleAppContainer
 from Screens.Screen import Screen
 from Components.Label import Label
 from Components.ActionMap import ActionMap
 from Components.ScrollLabel import ScrollLabel
+
 from Screens.MessageBox import MessageBox
 from enigma import getDesktop
 import sys
 
+
+PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
-screen_width = getDesktop(0).size().width()
+
+
+def getDesktopSize():
+    s = getDesktop(0).size()
+    return (s.width(), s.height())
+
+
+def isHD():
+    desktopSize = getDesktopSize()
+    return desktopSize[0] == 1280
 
 
 class Console(Screen):
-    if screen_width == 1280:
+    if isHD():
         skin = '''<screen position="17,center" size="1245,681" title="Command execution..." backgroundColor="#16000000" flags="wfNoBorder">
             <widget name="text" position="9,48" size="1237,587" backgroundColor="#16000000" foregroundColor="#00ffffff" font="Console;24"/>
             <eLabel text="Command execution..." font="Regular;30" size="1000,40" position="8,3" foregroundColor="#00ffffff" backgroundColor="#16000000" zPosition="4"/>
@@ -61,22 +74,19 @@ class Console(Screen):
         self['key_red'] = Label('Cancel')
         self['key_green'] = Label('Hide/Show')
         self['key_blue'] = Label('Restart')
-        self["actions"] = ActionMap(
-            [
-                "WizardActions",
-                "DirectionActions",
-                "ColorActions"
-            ],
-            {
-                "ok": self.cancel,
-                "up": self["text"].pageUp,
-                "down": self["text"].pageDown,
-                "red": self.cancel,
-                "green": self.toggleHideShow,
-                "blue": self.restartenigma,
-                "exit": self.cancel,
-            }, -1
-        )
+
+        self["actions"] = ActionMap(["WizardActions",
+                                     "DirectionActions",
+                                     'ColorActions'],
+                                    {"ok": self.cancel,
+                                     "up": self["text"].pageUp,
+                                     "down": self["text"].pageDown,
+                                     "red": self.cancel,
+                                     "green": self.toggleHideShow,
+                                     "blue": self.restartenigma,
+                                     "exit": self.cancel,
+                                     },
+                                    -1)
 
         self.newtitle = title == 'Console' and 'Console' or title
         self.cmdlist = isinstance(cmdlist, list) and cmdlist or [cmdlist]
@@ -183,7 +193,10 @@ class Console(Screen):
             self.show()
 
     def dataAvail(self, str):
-        data = str.decode()
+        if PY3:
+            data = str.decode()
+        else:
+            data = str
         print("[Console] Data received: ", data)
         self['text'].appendText(data)
 

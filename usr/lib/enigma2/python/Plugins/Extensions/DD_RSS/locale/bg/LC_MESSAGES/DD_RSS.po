@@ -32,13 +32,37 @@ msgstr ""
 msgid "Do you want to install update ( %s ) now?"
 msgstr "Vuoi installare l'aggiornamento ( %s ) ora?"
 
+msgid "Download failed: {}"
+msgstr ""
+
+msgid "Download timeout (10s)"
+msgstr ""
+
 msgid "Edit"
+msgstr ""
+
+msgid "Empty response from server"
+msgstr ""
+
+msgid "Error: {}"
+msgstr ""
+
+msgid "Failed to parse RSS feed"
+msgstr ""
+
+msgid "Failed to parse XML file"
+msgstr ""
+
+msgid "Feeds imported successfully"
 msgstr ""
 
 msgid "Import"
 msgstr ""
 
 msgid "Keyboard"
+msgstr ""
+
+msgid "No XML file found at /tmp/feeds.xml"
 msgstr ""
 
 msgid "Save"
@@ -55,3 +79,6 @@ msgstr "Aggiorna"
 
 msgid "Update Aborted!"
 msgstr "Aggiornamento annullato!"
+
+msgid "Update check failed!"
+msgstr ""

@@ -581,9 +581,11 @@ def test_translation():
         else:
             status = "✗ FAIL"
             all_passed = False
-        if DEBUG:
-            print(
-                f"{status}: '{original}' -> '{result}' (expected: '{expected}')")
+    if DEBUG:
+        print(
+            f"{status}: '{original}' -> '{result}' "
+            f"(expected: '{expected}')"
+        )
     if DEBUG:
         print("=" * 60)
         stats = get_cache_stats()

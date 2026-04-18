@@ -1,8 +1,8 @@
 #!/bin/bash
 ## setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/DDRSSReader/main/installer.sh -O - | /bin/sh
 
-version='0.8'
-changelog='Add Sat-universe - Fix screen'
+version='1.0'
+changelog='Recoded and porting to Python3\nAdd AI Translate'
 
 TMPPATH=/tmp/DDRSSReader-install
 FILEPATH=/tmp/DDRSSReader-main.tar.gz

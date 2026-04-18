@@ -131,6 +131,7 @@ def skrati(d0, zl):
 
 class UnesiPod(Screen):
     """Add or edit an RSS feed."""
+
     def __init__(self, session, edit_name=None, edit_url=None):
         self.session = session
         self.edit_name = edit_name
@@ -232,53 +233,91 @@ class UnesiPod(Screen):
         remote_version = '0.0'
         remote_changelog = ''
         try:
-            req = Request(b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
-            page = urlopen(req, timeout=10).read().decode('utf-8', errors='ignore')
+            req = Request(
+                b64decoder(installer_url), headers={
+                    'User-Agent': 'Mozilla/5.0'})
+            page = urlopen(
+                req, timeout=10).read().decode(
+                'utf-8', errors='ignore')
             for line in page.split('\n'):
                 if line.startswith("version"):
-                    remote_version = line.split("'")[1] if "'" in line else line.split('=')[1].strip()
+                    remote_version = line.split(
+                        "'")[1] if "'" in line else line.split('=')[1].strip()
                 elif line.startswith("changelog"):
-                    remote_changelog = line.split("'")[1] if "'" in line else line.split('=')[1].strip()
+                    remote_changelog = line.split(
+                        "'")[1] if "'" in line else line.split('=')[1].strip()
                     break
             if LooseVersion(__version__) < LooseVersion(remote_version):
                 self.update_available = True
                 self.new_version = remote_version
                 self.new_changelog = remote_changelog
-                self.session.open(MessageBox,
-                                  _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog),
-                                  MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(
+                    MessageBox,
+                    _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') %
+                    (self.new_version,
+                     self.new_changelog),
+                    MessageBox.TYPE_INFO,
+                    timeout=5)
         except Exception as e:
             print("Version check error:", e)
 
     def update_me(self):
         if hasattr(self, 'update_available') and self.update_available:
-            self.session.openWithCallback(self.install_update, MessageBox,
-                                          _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (self.new_version, self.new_changelog),
-                                          MessageBox.TYPE_YESNO)
+            self.session.openWithCallback(
+                self.install_update,
+                MessageBox,
+                _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") %
+                (self.new_version,
+                 self.new_changelog),
+                MessageBox.TYPE_YESNO)
         else:
-            self.session.open(MessageBox, _("Congrats! You already have the latest version..."), MessageBox.TYPE_INFO, timeout=4)
+            self.session.open(
+                MessageBox,
+                _("Congrats! You already have the latest version..."),
+                MessageBox.TYPE_INFO,
+                timeout=4)
 
     def update_dev(self):
         try:
-            req = Request(b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
+            req = Request(
+                b64decoder(developer_url), headers={
+                    'User-Agent': 'Mozilla/5.0'})
             page = urlopen(req, timeout=10).read().decode('utf-8')
             data = json.loads(page)
             remote_date = data['pushed_at']
-            strp_remote_date = datetime.strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
+            strp_remote_date = datetime.strptime(
+                remote_date, '%Y-%m-%dT%H:%M:%SZ')
             remote_date_str = strp_remote_date.strftime('%Y-%m-%d')
-            self.session.openWithCallback(self.install_update, MessageBox,
-                                          _("Do you want to install update ( %s ) now?") % remote_date_str,
-                                          MessageBox.TYPE_YESNO)
+            self.session.openWithCallback(
+                self.install_update,
+                MessageBox,
+                _("Do you want to install update ( %s ) now?") %
+                remote_date_str,
+                MessageBox.TYPE_YESNO)
         except Exception as e:
             print('Update dev error:', e)
-            self.session.open(MessageBox, _("Update check failed!"), MessageBox.TYPE_ERROR, timeout=3)
+            self.session.open(
+                MessageBox,
+                _("Update check failed!"),
+                MessageBox.TYPE_ERROR,
+                timeout=3)
 
     def install_update(self, answer=False):
         if answer:
-            cmd = 'wget -q "--no-check-certificate" ' + b64decoder(installer_url) + ' -O - | /bin/sh'
-            self.session.open(xConsole, 'Upgrading...', cmdlist=[cmd], finishedCallback=self.update_callback, closeOnSuccess=False)
+            cmd = 'wget -q "--no-check-certificate" ' + \
+                b64decoder(installer_url) + ' -O - | /bin/sh'
+            self.session.open(
+                xConsole,
+                'Upgrading...',
+                cmdlist=[cmd],
+                finishedCallback=self.update_callback,
+                closeOnSuccess=False)
         else:
-            self.session.open(MessageBox, _("Update Aborted!"), MessageBox.TYPE_INFO, timeout=3)
+            self.session.open(
+                MessageBox,
+                _("Update Aborted!"),
+                MessageBox.TYPE_INFO,
+                timeout=3)
 
     def update_callback(self, result=None):
         print('Update result:', result)
@@ -286,9 +325,17 @@ class UnesiPod(Screen):
     def openKeyboard(self):
         current = self['liste'].getCurrent()
         if current and current[1] == self.nazrss:
-            self.session.openWithCallback(self.vrationazad, VirtualKeyBoard, title='RSS name', text=self.nazrss.value)
+            self.session.openWithCallback(
+                self.vrationazad,
+                VirtualKeyBoard,
+                title='RSS name',
+                text=self.nazrss.value)
         elif current and current[1] == self.urlrss:
-            self.session.openWithCallback(self.vrationazad, VirtualKeyBoard, title='URL -> http://', text=self.urlrss.value)
+            self.session.openWithCallback(
+                self.vrationazad,
+                VirtualKeyBoard,
+                title='URL -> http://',
+                text=self.urlrss.value)
 
     def vrationazad(self, callback=None):
         if callback:
@@ -327,6 +374,7 @@ class UnesiPod(Screen):
 
 class MojRSS(Screen):
     """Main screen listing RSS feeds."""
+
     def __init__(self, session):
         self.session = session
         if screen_width == 1280:
@@ -409,7 +457,8 @@ class MojRSS(Screen):
                             name, url = line.split(':', 1)
                             self.ime.append(name.strip())
                             self.put.append(url.strip())
-                            self.rsslist.append(f"*** {name.strip()} ***".center(90))
+                            self.rsslist.append(
+                                f"*** {name.strip()} ***".center(90))
             except Exception as e:
                 print('Error reading feeds:', e)
 
@@ -445,7 +494,11 @@ class MojRSS(Screen):
         if os.path.exists(TMP_FEEDS_XML):
             self.import_from_xml()
         else:
-            self.session.open(MessageBox, _("No XML file found at /tmp/feeds.xml"), MessageBox.TYPE_INFO, timeout=5)
+            self.session.open(
+                MessageBox,
+                _("No XML file found at /tmp/feeds.xml"),
+                MessageBox.TYPE_INFO,
+                timeout=5)
 
     def import_from_xml(self):
         try:
@@ -463,12 +516,20 @@ class MojRSS(Screen):
                 self.save_feeds()
                 self.load_feeds()
                 self.showMenu()
-                self.session.open(MessageBox, _("Feeds imported successfully"), MessageBox.TYPE_INFO, timeout=3)
+                self.session.open(
+                    MessageBox,
+                    _("Feeds imported successfully"),
+                    MessageBox.TYPE_INFO,
+                    timeout=3)
             else:
                 raise ValueError("Invalid XML structure")
         except Exception as e:
             print("Import error:", e)
-            self.session.open(MessageBox, _("Failed to parse XML file"), MessageBox.TYPE_ERROR, timeout=5)
+            self.session.open(
+                MessageBox,
+                _("Failed to parse XML file"),
+                MessageBox.TYPE_ERROR,
+                timeout=5)
 
     def izlaz(self):
         self.save_feeds()
@@ -494,16 +555,35 @@ class MojRSS(Screen):
                 text=True
             )
             if result.returncode != 0:
-                self.session.open(MessageBox, _("Download failed: {}").format(result.stderr), MessageBox.TYPE_ERROR, timeout=3)
+                self.session.open(
+                    MessageBox,
+                    _("Download failed: {}").format(
+                        result.stderr),
+                    MessageBox.TYPE_ERROR,
+                    timeout=3)
                 return
-            if not os.path.exists(TMP_RSS_FILE) or os.path.getsize(TMP_RSS_FILE) == 0:
-                self.session.open(MessageBox, _("Empty response from server"), MessageBox.TYPE_ERROR, timeout=3)
+            if not os.path.exists(TMP_RSS_FILE) or os.path.getsize(
+                    TMP_RSS_FILE) == 0:
+                self.session.open(
+                    MessageBox,
+                    _("Empty response from server"),
+                    MessageBox.TYPE_ERROR,
+                    timeout=3)
                 return
         except subprocess.TimeoutExpired:
-            self.session.open(MessageBox, _("Download timeout (10s)"), MessageBox.TYPE_ERROR, timeout=3)
+            self.session.open(
+                MessageBox,
+                _("Download timeout (10s)"),
+                MessageBox.TYPE_ERROR,
+                timeout=3)
             return
         except Exception as e:
-            self.session.open(MessageBox, _("Error: {}").format(str(e)), MessageBox.TYPE_ERROR, timeout=3)
+            self.session.open(
+                MessageBox,
+                _("Error: {}").format(
+                    str(e)),
+                MessageBox.TYPE_ERROR,
+                timeout=3)
             return
 
         titolo = ''
@@ -511,17 +591,21 @@ class MojRSS(Screen):
         try:
             with open(TMP_RSS_FILE, 'r') as fp:
                 for riga in fp.read().split('\n'):
-                    riga = riga.strip().replace('<![CDATA[', '').replace(']]>', '')
+                    riga = riga.strip().replace(
+                        '<![CDATA[', '').replace(']]>', '')
                     contenuto_completo += riga.strip()
 
             with open(TMP_LIRSS_FILE, 'w') as fp1:
                 if contenuto_completo:
-                    n0, n1, n2 = trazenje('encoding=', '?><', 'title', contenuto_completo)
-                    codifica = uzmitekst(n0 + 9, n1, contenuto_completo) if n0 > -1 else ''
+                    n0, n1, n2 = trazenje(
+                        'encoding=', '?><', 'title', contenuto_completo)
+                    codifica = uzmitekst(
+                        n0 + 9, n1, contenuto_completo) if n0 > -1 else ''
                     if n2 > -1:
                         contenuto_completo = skrati(n2 + 6, contenuto_completo)
 
-                    n0, n1, n2 = trazenje('</title>', '<item>', '', contenuto_completo)
+                    n0, n1, n2 = trazenje(
+                        '</title>', '<item>', '', contenuto_completo)
                     if n0 > -1:
                         titolo = uzmitekst(0, n0, contenuto_completo)
                         contenuto_completo = skrati(n1, contenuto_completo)
@@ -529,28 +613,48 @@ class MojRSS(Screen):
 
                     elementi = contenuto_completo.split('<item>')[1:]
                     for elemento in elementi:
-                        n0, n1, n2 = trazenje('<title>', '</title>', '', elemento)
-                        titolo_elemento = uzmitekst(n0 + 7, n1, elemento) if n0 > -1 else 'No title'
-                        n0, n1, n2 = trazenje('', '<pubDate>', '</pubDate>', elemento)
-                        data = uzmitekst(n1 + 9, n2, elemento) if n1 > -1 else 'No date'
-                        n0, n1, n2 = trazenje('<description>', '</description>', "alt='' /&gt;", elemento)
+                        n0, n1, n2 = trazenje(
+                            '<title>', '</title>', '', elemento)
+                        titolo_elemento = uzmitekst(
+                            n0 + 7, n1, elemento) if n0 > -1 else 'No title'
+                        n0, n1, n2 = trazenje(
+                            '', '<pubDate>', '</pubDate>', elemento)
+                        data = uzmitekst(
+                            n1 + 9, n2, elemento) if n1 > -1 else 'No date'
+                        n0, n1, n2 = trazenje(
+                            '<description>', '</description>', "alt='' /&gt;", elemento)
                         immagine = 'nessuna'
                         if n2 > -1:
-                            n3, n4, n5 = trazenje('img src=', '', "alt='' /&gt;", elemento)
-                            immagine = uzmitekst(n3 + 8, n5 - 1, elemento) if n3 > -1 and n5 > -1 else 'nessuna'
+                            n3, n4, n5 = trazenje(
+                                'img src=', '', "alt='' /&gt;", elemento)
+                            immagine = uzmitekst(
+                                n3 + 8, n5 - 1, elemento) if n3 > -1 and n5 > -1 else 'nessuna'
                         else:
-                            n3, n4, n5 = trazenje('src=&quot;', '&lt;br', '&quot; alt=&quot;', elemento)
-                            immagine = uzmitekst(n3 + 10, n5, elemento) if n3 > -1 and n5 > -1 else 'nessuna'
-                        descrizione = uzmitekst(n0 + 13, n1, elemento).replace('&amp;nbsp;', '')
-                        fp1.write(f'{titolo_elemento}<DD>{data}<DD>{descrizione}<DD>{immagine}\n')
+                            n3, n4, n5 = trazenje(
+                                'src=&quot;', '&lt;br', '&quot; alt=&quot;', elemento)
+                            immagine = uzmitekst(
+                                n3 + 10, n5, elemento) if n3 > -1 and n5 > -1 else 'nessuna'
+                        descrizione = uzmitekst(
+                            n0 + 13,
+                            n1,
+                            elemento).replace(
+                            '&amp;nbsp;',
+                            '')
+                        fp1.write(
+                            f'{titolo_elemento}<DD>{data}<DD>{descrizione}<DD>{immagine}\n')
             self.session.open(PregledRSS)
         except Exception as e:
             print('Parse error:', e)
-            self.session.open(MessageBox, _("Failed to parse RSS feed"), MessageBox.TYPE_ERROR, timeout=5)
+            self.session.open(
+                MessageBox,
+                _("Failed to parse RSS feed"),
+                MessageBox.TYPE_ERROR,
+                timeout=5)
 
 
 class PregledRSS(Screen):
     """Preview RSS items list."""
+
     def __init__(self, session):
         self.session = session
         self.current_index = 0
@@ -633,7 +737,8 @@ class PregledRSS(Screen):
                             continue
                         if prvi == 1:
                             prvi = 0
-                            self.feed_title = razbi[2] if len(razbi) > 2 else "RSS Feed"
+                            self.feed_title = razbi[2] if len(
+                                razbi) > 2 else "RSS Feed"
                         else:
                             self.itemnas.append(razbi[0])
                             self.datum.append(decodeHtml(razbi[1]))
@@ -660,7 +765,8 @@ class PregledRSS(Screen):
         else:
             if 0 <= self.current_index < len(self.rsslist):
                 self.setTitle(self.feed_title)
-                self['opisi'].setText(f"{self.datum[self.current_index]}\n\n{self.desc[self.current_index]}")
+                self['opisi'].setText(
+                    f"{self.datum[self.current_index]}\n\n{self.desc[self.current_index]}")
 
     def keyUp(self):
         if self.current_index > 0:
@@ -682,7 +788,9 @@ class PregledRSS(Screen):
 
     def ok(self):
         if 0 <= self.current_index < len(self.itemnas):
-            self.session.open(CijeliTekst, self.itemnas[self.current_index], self.desc[self.current_index])
+            self.session.open(CijeliTekst,
+                              self.itemnas[self.current_index],
+                              self.desc[self.current_index])
 
     def izlaz(self):
         if self.timer:
@@ -692,6 +800,7 @@ class PregledRSS(Screen):
 
 class CijeliTekst(Screen):
     """Display full description of a single RSS item."""
+
     def __init__(self, session, title, description):
         if screen_width == 1280:
             self.skin = '''

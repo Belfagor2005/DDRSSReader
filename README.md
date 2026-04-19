@@ -24,6 +24,8 @@
   </a>
 </p>
 
+[![Donate](https://img.shields.io/badge/_-Donate-red.svg?logo=githubsponsors&labelColor=555555&style=for-the-badge)](Maintainers.md#maintainers "Donate")
+
 ---
 
 ## 📌 Overview
